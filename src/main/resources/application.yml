@@ -24,6 +24,20 @@ spring:
 mybatis:
   mapper-locations: classpath:cn/jihangyu/glowworm/**/**.xml
   type-aliases-package: classpath:cn.jihangyu.glowworm.**.entity
+
 #log
 logging:
   config: classpath:logback.xml
+#swagger
+swagger:
+  title: 萤火虫共享图书接口文档
+  contact:
+    name: Ethanp
+    email: 18852897377@163.com
+    url: https://www.jihangyu.cn
+  base-package: cn.jihangyu.glowworm
+  base-path: /**
+  version: 1.1.0.RELEASE
+  description: 萤火虫共享图书接口文档
+  exclude-path: /error, /ops/**
+
