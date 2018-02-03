@@ -11,8 +11,11 @@ public enum ResultEnum {
     UNKONW_ERROR(500,"未知错误"),
     SUCCSEE(200,"成功"),
     OBJECT_NULL_ERROR(501,"对象不能为空"),
-    DB_INSERT_ERROR(502,"数据库插入异常"),
+    OBJECT_ADD_ERROR(502,"添加对象失败"),
     OBJECT_ALL_Field_NULL(503,"对象所有属性为空"),
+    OBJECT_FIND_ERROR(504,"对象不存在"),
+    OBJECT_DELETE_ERROR(505,"删除对象失败"),
+    OBJECT_UPDATE_ERROR(506,"更新对象失败"),
     ;
     private Integer code;
     private String msg;

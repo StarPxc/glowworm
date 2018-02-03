@@ -1,5 +1,6 @@
 package cn.jihangyu.glowworm.user.controller;
 
+import cn.jihangyu.glowworm.activity.entity.Activity;
 import cn.jihangyu.glowworm.common.resp.ApiResult;
 import cn.jihangyu.glowworm.common.utils.ResultUtil;
 import cn.jihangyu.glowworm.user.entity.User;
@@ -8,10 +9,9 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author Ethanp
@@ -31,7 +31,35 @@ public class UserController {
     @ApiImplicitParam(name = "user", value = "用户详细实体user", required = true, dataType = "User")
     @RequestMapping(value = "/addUser",method = RequestMethod.POST)
     public ApiResult addUser(@RequestBody User user) throws Exception {
-        userService.addUser(user);
+        User user1=userService.addUser(user);
+        return ResultUtil.success(user1);
+    }
+    @ApiOperation(value="修改用户", notes="根据User对象修改用户")
+    @ApiImplicitParam(name = "user", value = "用户详细实体user", required = true, dataType = "User")
+    @RequestMapping(value = "/updateUser",method = RequestMethod.POST)
+    public ApiResult updateUser(@RequestBody User user) throws Exception {
+        userService.updateUser(user);
         return ResultUtil.success(user);
     }
+    @ApiOperation(value="根据id查找用户", notes="根据id查用户")
+    @RequestMapping(value = "/getUser/{id}",method = RequestMethod.GET)
+    public ApiResult getUser(@PathVariable int id) throws Exception {
+        User user=userService.findUserById(id);
+        return ResultUtil.success(user);
+    }
+    @ApiOperation(value="根据id删除用户", notes="根据id删除用户")
+    @RequestMapping(value = "/deleteUser/{id}",method = RequestMethod.GET)
+    public ApiResult deleteUser(@PathVariable int id) throws Exception {
+        userService.deleteUserById(id);
+        return ResultUtil.success("删除成功");
+    }
+
+    @ApiOperation(value="根据用户id和活动状态查找他参加的活动", notes="{1：未进行，2：正在进行，3：已结束，0:所有)")
+    @RequestMapping(value = "/findActiviysByUserId/{id}/{state}",method = RequestMethod.GET)
+    public ApiResult findActiviysByUserId(@PathVariable int id,@PathVariable int state) throws Exception {
+        List<Activity> activities=userService.findActiviysByUserId(id,state);
+        return ResultUtil.success(activities);
+    }
+
+
 }

@@ -1,4 +1,4 @@
-package cn.jihangyu.glowworm.user.service;
+package cn.jihangyu.glowworm.activity.service;
 
 import cn.jihangyu.glowworm.activity.dao.ActivityMapper;
 import cn.jihangyu.glowworm.activity.entity.Activity;
@@ -6,7 +6,6 @@ import cn.jihangyu.glowworm.common.enums.ResultEnum;
 import cn.jihangyu.glowworm.common.execption.GlowwormExecption;
 import cn.jihangyu.glowworm.common.utils.MyUtil;
 import cn.jihangyu.glowworm.user.dao.UserMapper;
-import cn.jihangyu.glowworm.user.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,48 +15,51 @@ import java.util.List;
 /**
  * @author Ethanp
  * @version V1.0
- * @Package cn.jihangyu.glowworm.user.service
- * @Description: TODO 用户业务
- * @date 2018/2/2 9:06
+ * @Package cn.jihangyu.glowworm.activity.service
+ * @Description: TODO
+ * @date 2018/2/3 17:07
  */
 @Service
 @Slf4j
-public class UserServiceImpl implements UserService {
-    @Autowired
-    private UserMapper userMapper;
+public class ActivityServiceImpl implements ActivityService {
     @Autowired
     private ActivityMapper activityMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
-    public User addUser(User user) throws Exception {
-        if(user==null){
+    public Activity getActivityByActivityId(Integer id) throws Exception {
+        if(id==null){
             throw new GlowwormExecption(ResultEnum.OBJECT_NULL_ERROR);
         }
-        if(MyUtil.isAllFieldNull(user)){
+        Activity activity=activityMapper.selectByPrimaryKey(id);
+        if(MyUtil.isAllFieldNull(activity)){
+            throw new GlowwormExecption(ResultEnum.OBJECT_ALL_Field_NULL);
+        }
+        return activity;
+    }
+
+    @Override
+    public Activity addActivity(Activity activity) throws Exception {
+        if(activity==null){
+            throw new GlowwormExecption(ResultEnum.OBJECT_NULL_ERROR);
+        }
+        if(MyUtil.isAllFieldNull(activity)){
             throw new GlowwormExecption(ResultEnum.OBJECT_ALL_Field_NULL);
         }
         try {
-            userMapper.insertSelective(user);
+            activityMapper.insertSelective(activity);
         }catch (Exception e){
             log.error("【添加对象失败】",e);
             throw new GlowwormExecption(ResultEnum.OBJECT_ADD_ERROR);
         }
-        return user;
+        return activity;
     }
 
     @Override
-    public User findUserById(Integer id) {
-        User user= userMapper.selectByPrimaryKey(id);
-        if(user==null){
-            throw new GlowwormExecption(ResultEnum.OBJECT_FIND_ERROR);
-        }
-        return user;
-    }
-
-    @Override
-    public void updateUser(User user) {
+    public void updateActivity(Activity activity) {
         try {
-            int code= userMapper.updateByPrimaryKeySelective(user);
+            int code= activityMapper.updateByPrimaryKeySelective(activity);
             if(code!=1){
                 throw new GlowwormExecption(ResultEnum.OBJECT_FIND_ERROR);
             }
@@ -68,13 +70,12 @@ public class UserServiceImpl implements UserService {
             throw new GlowwormExecption(ResultEnum.OBJECT_UPDATE_ERROR);
 
         }
-
     }
 
     @Override
-    public void deleteUserById(Integer id) {
+    public void deleteActivityById(Integer id) {
         try {
-            int code= userMapper.deleteByPrimaryKey(id);
+            int code= activityMapper.deleteByPrimaryKey(id);
             if(code!=1){
                 throw new GlowwormExecption(ResultEnum.OBJECT_FIND_ERROR);
             }
@@ -89,15 +90,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Activity> findActiviysByUserId(Integer id,Integer state) {
+    public List<Activity> findActiviysByState(Integer state) {
         List<Activity> activities;
-        if(id==null||state==null){
+        if(state==null){
             throw new GlowwormExecption(ResultEnum.OBJECT_NULL_ERROR);
         }
         if(state==0){
-            activities=activityMapper.selectAllActiviysByUserId(id);
+            activities=activityMapper.selectAllActiviysByState();
         }else {
-            activities = activityMapper.selectActiviysByUserId(id, state);
+            activities = activityMapper.selectActiviysByState(state);
         }
         if (activities == null) {
             throw new GlowwormExecption(ResultEnum.OBJECT_NULL_ERROR);

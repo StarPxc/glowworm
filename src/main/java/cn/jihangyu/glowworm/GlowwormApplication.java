@@ -14,6 +14,7 @@ public class GlowwormApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(GlowwormApplication.class, args);
+
 	}
 	//使用阿里巴巴的fastjson
 	@Bean
