@@ -1,6 +1,7 @@
 package cn.jihangyu.glowworm.activity.service;
 
 import cn.jihangyu.glowworm.activity.entity.Activity;
+import cn.jihangyu.glowworm.user.entity.User;
 
 import java.util.List;
 
@@ -43,4 +44,11 @@ public interface ActivityService {
      * @return
      */
     List<Activity> findActiviysByState(Integer state);
+
+    /**
+     *根据活动id获取报名这个活动的用户
+     * @param id 活动id
+     * @return
+     */
+    List<User> findUsersByActivityId(Integer id);
 }

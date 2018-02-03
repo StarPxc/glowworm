@@ -6,6 +6,7 @@ import cn.jihangyu.glowworm.common.enums.ResultEnum;
 import cn.jihangyu.glowworm.common.execption.GlowwormExecption;
 import cn.jihangyu.glowworm.common.utils.MyUtil;
 import cn.jihangyu.glowworm.user.dao.UserMapper;
+import cn.jihangyu.glowworm.user.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -101,8 +102,17 @@ public class ActivityServiceImpl implements ActivityService {
             activities = activityMapper.selectActiviysByState(state);
         }
         if (activities == null) {
-            throw new GlowwormExecption(ResultEnum.OBJECT_NULL_ERROR);
+            throw new GlowwormExecption(ResultEnum.NO_ACTIVITY);
         }
         return activities;
+    }
+
+    @Override
+    public List<User> findUsersByActivityId(Integer id) {
+        if(id==null){
+            throw new GlowwormExecption(ResultEnum.OBJECT_NULL_ERROR);
+        }
+        List<User> users=userMapper.selectUsersByActivityId(id);
+        return users;
     }
 }

@@ -13,9 +13,17 @@
     <result column="u_self_introduction" property="uSelfIntroduction" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    u_id, u_nickname, u_province, u_city, u_gender, u_email, appointment_b_id, u_phone, 
-    u_self_introduction
-  </sql>
+  u_id, u_nickname, u_province, u_city, u_gender, u_email, appointment_b_id, u_phone,
+  u_self_introduction
+</sql>
+
+  <select id="selectUsersByActivityId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from user
+    WHERE `user`.u_id in (SELECT `user`.u_id FROM us_ac,`user` WHERE `user`.u_id = us_ac.u_id
+    AND us_ac.a_id=#{id})
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />

@@ -19,13 +19,13 @@
     delete from us_ac
     where ua_id = #{uaId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.jihangyu.glowworm.usAc.entity.UsAc" >
+  <insert id="insert" parameterType="cn.jihangyu.glowworm.usAc.entity.UsAc" useGeneratedKeys="true" keyProperty="uaId" >
     insert into us_ac (ua_id, u_id, a_id
       )
     values (#{uaId,jdbcType=INTEGER}, #{uId,jdbcType=INTEGER}, #{aId,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="cn.jihangyu.glowworm.usAc.entity.UsAc" >
+  <insert id="insertSelective" parameterType="cn.jihangyu.glowworm.usAc.entity.UsAc" useGeneratedKeys="true" keyProperty="uaId">
     insert into us_ac
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="uaId != null" >
@@ -50,7 +50,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.jihangyu.glowworm.usAc.entity.UsAc" >
+  <update id="updateByPrimaryKeySelective" parameterType="cn.jihangyu.glowworm.usAc.entity.UsAc"  >
     update us_ac
     <set >
       <if test="uId != null" >

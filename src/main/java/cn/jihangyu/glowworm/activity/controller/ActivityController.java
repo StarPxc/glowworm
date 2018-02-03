@@ -4,6 +4,7 @@ import cn.jihangyu.glowworm.activity.entity.Activity;
 import cn.jihangyu.glowworm.activity.service.ActivityService;
 import cn.jihangyu.glowworm.common.resp.ApiResult;
 import cn.jihangyu.glowworm.common.utils.ResultUtil;
+import cn.jihangyu.glowworm.user.entity.User;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,4 +58,11 @@ public class ActivityController {
         List<Activity> activities=activityService.findActiviysByState(state);
         return ResultUtil.success(activities);
     }
+    @ApiOperation(value="根据活动id获取报名这个活动的用户", notes="根据活动id获取报名这个活动的用户")
+    @RequestMapping(value = "/findUsersByActivityId/{id}",method = RequestMethod.GET)
+    public ApiResult findUsersByActivityId(@PathVariable Integer id) throws Exception {
+        List<User> users =activityService.findUsersByActivityId(id);
+        return ResultUtil.success(users);
+    }
+
 }

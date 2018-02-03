@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
             activities = activityMapper.selectActiviysByUserId(id, state);
         }
         if (activities == null) {
-            throw new GlowwormExecption(ResultEnum.OBJECT_NULL_ERROR);
+            throw new GlowwormExecption(ResultEnum.NO_USER);
         }
         return activities;
     }

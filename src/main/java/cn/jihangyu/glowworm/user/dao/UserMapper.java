@@ -21,4 +21,5 @@ public interface UserMapper {
     int updateByPrimaryKey(User record);
 
 
+    List<User> selectUsersByActivityId(Integer id);
 }

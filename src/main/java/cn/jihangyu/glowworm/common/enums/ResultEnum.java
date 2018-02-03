@@ -16,6 +16,8 @@ public enum ResultEnum {
     OBJECT_FIND_ERROR(504,"对象不存在"),
     OBJECT_DELETE_ERROR(505,"删除对象失败"),
     OBJECT_UPDATE_ERROR(506,"更新对象失败"),
+    NO_USER(507,"用户不存在"),
+    NO_ACTIVITY(508,"活动不存在"),
     ;
     private Integer code;
     private String msg;
