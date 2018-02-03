@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jihangyu.glowworm.usAc.dao.UsAcMapper" >
+  <resultMap id="BaseResultMap" type="cn.jihangyu.glowworm.usAc.entity.UsAc" >
+    <id column="ua_id" property="uaId" jdbcType="INTEGER" />
+    <result column="u_id" property="uId" jdbcType="INTEGER" />
+    <result column="a_id" property="aId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ua_id, u_id, a_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from us_ac
+    where ua_id = #{uaId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from us_ac
+    where ua_id = #{uaId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.jihangyu.glowworm.usAc.entity.UsAc" >
+    insert into us_ac (ua_id, u_id, a_id
+      )
+    values (#{uaId,jdbcType=INTEGER}, #{uId,jdbcType=INTEGER}, #{aId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.jihangyu.glowworm.usAc.entity.UsAc" >
+    insert into us_ac
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="uaId != null" >
+        ua_id,
+      </if>
+      <if test="uId != null" >
+        u_id,
+      </if>
+      <if test="aId != null" >
+        a_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="uaId != null" >
+        #{uaId,jdbcType=INTEGER},
+      </if>
+      <if test="uId != null" >
+        #{uId,jdbcType=INTEGER},
+      </if>
+      <if test="aId != null" >
+        #{aId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.jihangyu.glowworm.usAc.entity.UsAc" >
+    update us_ac
+    <set >
+      <if test="uId != null" >
+        u_id = #{uId,jdbcType=INTEGER},
+      </if>
+      <if test="aId != null" >
+        a_id = #{aId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ua_id = #{uaId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.jihangyu.glowworm.usAc.entity.UsAc" >
+    update us_ac
+    set u_id = #{uId,jdbcType=INTEGER},
+      a_id = #{aId,jdbcType=INTEGER}
+    where ua_id = #{uaId,jdbcType=INTEGER}
+  </update>
+</mapper>
