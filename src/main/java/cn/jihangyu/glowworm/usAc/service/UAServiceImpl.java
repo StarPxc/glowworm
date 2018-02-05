@@ -14,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * @author Ethanp
@@ -31,7 +34,9 @@ public class UAServiceImpl implements UAService {
     private UserMapper userMapper;
     @Autowired
     private ActivityMapper activityMapper;
-
+    private static ReadWriteLock lock = new ReentrantReadWriteLock(false);
+    private static Lock rlock = lock.readLock();
+    private static Lock wlock = lock.writeLock();
     @Override
     public UsAc addUsAc(UsAc usAc) throws Exception {
         if (usAc == null) {
@@ -46,12 +51,14 @@ public class UAServiceImpl implements UAService {
         if (activityMapper.selectByPrimaryKey(usAc.getaId()) == null) {
             throw new GlowwormExecption(ResultEnum.NO_ACTIVITY);
         }
+        wlock.lock();
         try {
-
             usAcMapper.insertSelective(usAc);
         } catch (Exception e) {
             log.error("【参加活动失败】", e);
             throw new GlowwormExecption(ResultEnum.OBJECT_ADD_ERROR);
+        }finally {
+            wlock.unlock();
         }
 
         return usAc;
@@ -59,6 +66,7 @@ public class UAServiceImpl implements UAService {
 
     @Override
     public void deleteUAById(Integer id) {
+        wlock.lock();
         try {
             int code = usAcMapper.deleteByPrimaryKey(id);
             if (code != 1) {
@@ -69,7 +77,8 @@ public class UAServiceImpl implements UAService {
         } catch (Exception e) {
             log.error("【删除对象失败】", e);
             throw new GlowwormExecption(ResultEnum.OBJECT_DELETE_ERROR);
-
+        }finally {
+            wlock.unlock();
         }
     }
 
@@ -78,7 +87,13 @@ public class UAServiceImpl implements UAService {
         if (id == null) {
             throw new GlowwormExecption(ResultEnum.OBJECT_NULL_ERROR);
         }
-        List<User> users = userMapper.selectUsersByActivityId(id);
+        rlock.lock();
+        List<User> users;
+        try{
+            users = userMapper.selectUsersByActivityId(id);
+        }finally {
+            rlock.unlock();
+        }
         return users;
     }
     @Override
@@ -87,14 +102,17 @@ public class UAServiceImpl implements UAService {
         if(id==null||state==null){
             throw new GlowwormExecption(ResultEnum.OBJECT_NULL_ERROR);
         }
-        if(state==0){
-            activities=activityMapper.selectAllActiviysByUserId(id);
-        }else {
-            activities = activityMapper.selectActiviysByUserId(id, state);
+        rlock.lock();
+        try {
+            if(state==0){
+                activities=activityMapper.selectAllActiviysByUserId(id);
+            }else {
+                activities = activityMapper.selectActiviysByUserId(id, state);
+            }
+        }finally {
+            rlock.unlock();
         }
-        if (activities == null) {
-            throw new GlowwormExecption(ResultEnum.NO_USER);
-        }
+
         return activities;
     }
 }
