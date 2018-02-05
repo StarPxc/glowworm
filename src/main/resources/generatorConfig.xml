@@ -17,19 +17,19 @@
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
 
-        <javaModelGenerator targetPackage="cn.jihangyu.glowworm.usAc.entity" targetProject=".\src\main\java">
+        <javaModelGenerator targetPackage="cn.jihangyu.glowworm.activity.entity" targetProject=".\src\main\java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
-        <sqlMapGenerator targetPackage="cn.jihangyu.glowworm.usAc.dao" targetProject=".\src\main\java">
+        <sqlMapGenerator targetPackage="cn.jihangyu.glowworm.activity.dao" targetProject=".\src\main\java">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
-        <javaClientGenerator type="XMLMAPPER" targetPackage="cn.jihangyu.glowworm.usAc.dao" targetProject=".\src\main\java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="cn.jihangyu.glowworm.activity.dao" targetProject=".\src\main\java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="us_ac" domainObjectName="UsAc" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+        <table tableName="activity" domainObjectName="ACtivity" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
     </context>
 </generatorConfiguration>

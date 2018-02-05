@@ -20,14 +20,14 @@
   <select id="selectUsersByActivityId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
     <include refid="Base_Column_List" />
-    from user
+    from `user`
     WHERE `user`.u_id in (SELECT `user`.u_id FROM us_ac,`user` WHERE `user`.u_id = us_ac.u_id
     AND us_ac.a_id=#{id})
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from user
+    from `user`
     where u_id = #{uId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
@@ -43,7 +43,7 @@
       #{uPhone,jdbcType=CHAR}, #{uSelfIntroduction,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.jihangyu.glowworm.user.entity.User" useGeneratedKeys="true" keyProperty="uId">
-    insert into user
+    insert into `user`
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="uId != null" >
         u_id,
@@ -104,7 +104,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="cn.jihangyu.glowworm.user.entity.User" >
-    update user
+    update `user`
     <set >
       <if test="uNickname != null" >
         u_nickname = #{uNickname,jdbcType=CHAR},
@@ -134,7 +134,7 @@
     where u_id = #{uId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="cn.jihangyu.glowworm.user.entity.User" >
-    update user
+    update `user`
     set u_nickname = #{uNickname,jdbcType=CHAR},
       u_province = #{uProvince,jdbcType=CHAR},
       u_city = #{uCity,jdbcType=CHAR},

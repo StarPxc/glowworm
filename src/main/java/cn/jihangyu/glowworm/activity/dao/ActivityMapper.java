@@ -19,11 +19,11 @@ public interface ActivityMapper {
 
     int updateByPrimaryKey(Activity record);
 
-    List<Activity> selectActiviysByUserId(Integer id,Integer state);
+    List<Activity> selectActiviysByUserId(Integer id, Integer state);
 
     List<Activity> selectAllActiviysByUserId(Integer id);
 
-    List<Activity> selectAllActiviysByState();
+    List<Activity> selectAllActiviys();
 
     List<Activity> selectActiviysByState(Integer state);
 }

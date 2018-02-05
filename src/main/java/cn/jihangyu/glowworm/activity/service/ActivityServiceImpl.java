@@ -1,12 +1,9 @@
 package cn.jihangyu.glowworm.activity.service;
-
 import cn.jihangyu.glowworm.activity.dao.ActivityMapper;
 import cn.jihangyu.glowworm.activity.entity.Activity;
 import cn.jihangyu.glowworm.common.enums.ResultEnum;
 import cn.jihangyu.glowworm.common.execption.GlowwormExecption;
 import cn.jihangyu.glowworm.common.utils.MyUtil;
-import cn.jihangyu.glowworm.user.dao.UserMapper;
-import cn.jihangyu.glowworm.user.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,8 +22,6 @@ import java.util.List;
 public class ActivityServiceImpl implements ActivityService {
     @Autowired
     private ActivityMapper activityMapper;
-    @Autowired
-    private UserMapper userMapper;
 
     @Override
     public Activity getActivityByActivityId(Integer id) throws Exception {
@@ -93,12 +88,12 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public List<Activity> findActiviysByState(Integer state) {
         List<Activity> activities;
-        if(state==null){
+        if (state == null) {
             throw new GlowwormExecption(ResultEnum.OBJECT_NULL_ERROR);
         }
-        if(state==0){
-            activities=activityMapper.selectAllActiviysByState();
-        }else {
+        if (state == 0) {
+            activities = activityMapper.selectAllActiviys();
+        } else {
             activities = activityMapper.selectActiviysByState(state);
         }
         if (activities == null) {
@@ -107,12 +102,4 @@ public class ActivityServiceImpl implements ActivityService {
         return activities;
     }
 
-    @Override
-    public List<User> findUsersByActivityId(Integer id) {
-        if(id==null){
-            throw new GlowwormExecption(ResultEnum.OBJECT_NULL_ERROR);
-        }
-        List<User> users=userMapper.selectUsersByActivityId(id);
-        return users;
-    }
 }

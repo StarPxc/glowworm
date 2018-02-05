@@ -1,7 +1,6 @@
 package cn.jihangyu.glowworm.user.service;
 
-import cn.jihangyu.glowworm.activity.dao.ActivityMapper;
-import cn.jihangyu.glowworm.activity.entity.Activity;
+
 import cn.jihangyu.glowworm.common.enums.ResultEnum;
 import cn.jihangyu.glowworm.common.execption.GlowwormExecption;
 import cn.jihangyu.glowworm.common.utils.MyUtil;
@@ -9,6 +8,7 @@ import cn.jihangyu.glowworm.user.dao.UserMapper;
 import cn.jihangyu.glowworm.user.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,9 +24,8 @@ import java.util.List;
 @Slf4j
 public class UserServiceImpl implements UserService {
     @Autowired
+    @Lazy
     private UserMapper userMapper;
-    @Autowired
-    private ActivityMapper activityMapper;
 
     @Override
     public User addUser(User user) throws Exception {
@@ -88,20 +87,5 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    public List<Activity> findActiviysByUserId(Integer id,Integer state) {
-        List<Activity> activities;
-        if(id==null||state==null){
-            throw new GlowwormExecption(ResultEnum.OBJECT_NULL_ERROR);
-        }
-        if(state==0){
-            activities=activityMapper.selectAllActiviysByUserId(id);
-        }else {
-            activities = activityMapper.selectActiviysByUserId(id, state);
-        }
-        if (activities == null) {
-            throw new GlowwormExecption(ResultEnum.NO_USER);
-        }
-        return activities;
-    }
+
 }

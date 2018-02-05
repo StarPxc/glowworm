@@ -1,6 +1,5 @@
 package cn.jihangyu.glowworm.user.controller;
 
-import cn.jihangyu.glowworm.activity.entity.Activity;
 import cn.jihangyu.glowworm.common.resp.ApiResult;
 import cn.jihangyu.glowworm.common.utils.ResultUtil;
 import cn.jihangyu.glowworm.user.entity.User;
@@ -9,6 +8,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +25,7 @@ import java.util.List;
 public class UserController {
     @Autowired
     @Qualifier("userServiceImpl")
+    @Lazy
     private UserService userService;
 
     @ApiOperation(value="创建用户", notes="根据User对象创建用户")
@@ -54,12 +55,7 @@ public class UserController {
         return ResultUtil.success("删除成功");
     }
 
-    @ApiOperation(value="根据用户id和活动状态查找他参加的活动", notes="{1：未进行，2：正在进行，3：已结束，0:所有)")
-    @RequestMapping(value = "/findActiviysByUserId/{id}/{state}",method = RequestMethod.GET)
-    public ApiResult findActiviysByUserId(@PathVariable int id,@PathVariable int state) throws Exception {
-        List<Activity> activities=userService.findActiviysByUserId(id,state);
-        return ResultUtil.success(activities);
-    }
+
 
 
 }

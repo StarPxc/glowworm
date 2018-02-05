@@ -1,12 +1,11 @@
 package cn.jihangyu.glowworm.user.dao;
 
-import cn.jihangyu.glowworm.activity.entity.Activity;
 import cn.jihangyu.glowworm.user.entity.User;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
-@Component
+@Repository
 public interface UserMapper {
     int deleteByPrimaryKey(Integer uId);
 

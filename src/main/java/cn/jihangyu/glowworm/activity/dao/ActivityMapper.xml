@@ -28,7 +28,7 @@
     where a_id  in (SELECT DISTINCT  a_id FROM us_ac,`user` WHERE `user`.u_id=us_ac.u_id AND `user`.u_id=#{0})
     AND activity.a_state=#{1}
   </select>
-    <select id="selectAllActiviysByState" resultMap="BaseResultMap">
+    <select id="selectAllActiviys" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         from activity

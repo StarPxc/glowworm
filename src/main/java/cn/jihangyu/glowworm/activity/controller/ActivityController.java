@@ -26,6 +26,7 @@ public class ActivityController {
     @Autowired
     @Qualifier("activityServiceImpl")
     private ActivityService activityService;
+
     @ApiOperation(value = "根据id获取活动",notes = "根据id获取活动")
     @RequestMapping(value = "/getActivity/{id}",method = RequestMethod.GET)
     public ApiResult getActivityByActivityId(@PathVariable Integer id) throws Exception {
@@ -58,11 +59,6 @@ public class ActivityController {
         List<Activity> activities=activityService.findActiviysByState(state);
         return ResultUtil.success(activities);
     }
-    @ApiOperation(value="根据活动id获取报名这个活动的用户", notes="根据活动id获取报名这个活动的用户")
-    @RequestMapping(value = "/findUsersByActivityId/{id}",method = RequestMethod.GET)
-    public ApiResult findUsersByActivityId(@PathVariable Integer id) throws Exception {
-        List<User> users =activityService.findUsersByActivityId(id);
-        return ResultUtil.success(users);
-    }
+
 
 }

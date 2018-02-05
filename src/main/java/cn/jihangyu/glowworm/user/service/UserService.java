@@ -1,6 +1,5 @@
 package cn.jihangyu.glowworm.user.service;
 
-import cn.jihangyu.glowworm.activity.entity.Activity;
 import cn.jihangyu.glowworm.user.entity.User;
 
 import java.util.List;
@@ -40,11 +39,5 @@ public interface UserService {
      */
     void deleteUserById(Integer id);
 
-    /**
-     * 根据用户id和活动状态查找他参加的的活动{1：未进行，2：正在进行，3：已结束，0所有}
-     * @param id 用户id
-     * @param state 活动状态
-     * @return 活动集合
-     */
-    List<Activity> findActiviysByUserId(Integer id,Integer state);
+
 }
