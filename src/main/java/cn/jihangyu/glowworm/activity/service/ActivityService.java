@@ -1,8 +1,10 @@
 package cn.jihangyu.glowworm.activity.service;
 
 import cn.jihangyu.glowworm.activity.entity.Activity;
+import org.springframework.web.multipart.MultipartFile;
 
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -45,5 +47,19 @@ public interface ActivityService {
      */
     List<Activity> findActiviysByState(Integer state);
 
+    /**
+     * 批量上传活动图片
+     * @param files
+     * @param aId 活动id
+     * @return 活动图片地址数组
+     */
+    String[] uploadBatch(MultipartFile[] files, Integer aId) throws IOException;
 
+    /**
+     * 上传活动图片
+     * @param file
+     * @param aId
+     * @return 活动图片地址
+     */
+    String upload(MultipartFile file, Integer aId) throws IOException;
 }

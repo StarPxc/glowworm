@@ -9,4 +9,8 @@ package cn.jihangyu.glowworm.common.constants;
  */
 public class Constants {
     public static final String REQUEST_TOKEN_KEY = "user-token";
+    public static final String GLOWWORM_IMAGES_SRC="/var/www/imgs/glowworm/";
+    public static final String GLOWWORM_IMAGES_URL="https://jihangyu.cn/imgs/glowworm/";
+
+
 }
