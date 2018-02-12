@@ -18,7 +18,7 @@ public interface UserService {
      * @return
      * @throws Exception
      */
-    User addUser(User user) throws Exception;
+    String addUser(User user) throws Exception;
 
     /**
      * 根据id查找用户

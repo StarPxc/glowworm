@@ -89,6 +89,9 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public void deleteActivityById(Integer id) {
+        if(id==null){
+            throw new GlowwormExecption(ResultEnum.OBJECT_NULL_ERROR);
+        }
         wlock.lock();
         try {
             int code = activityMapper.deleteByPrimaryKey(id);

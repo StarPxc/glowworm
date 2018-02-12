@@ -45,7 +45,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
         </dependency>
-
+        <!--&lt;!&ndash; SpringSecurity依赖 &ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-starter-security</artifactId>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>

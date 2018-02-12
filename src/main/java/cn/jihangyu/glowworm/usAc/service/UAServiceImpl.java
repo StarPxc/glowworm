@@ -66,6 +66,9 @@ public class UAServiceImpl implements UAService {
 
     @Override
     public void deleteUAById(Integer id) {
+        if(id==null){
+            throw new GlowwormExecption(ResultEnum.OBJECT_NULL_ERROR);
+        }
         wlock.lock();
         try {
             int code = usAcMapper.deleteByPrimaryKey(id);

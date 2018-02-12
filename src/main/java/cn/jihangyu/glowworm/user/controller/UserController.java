@@ -1,8 +1,10 @@
 package cn.jihangyu.glowworm.user.controller;
 
+import cn.jihangyu.glowworm.common.base.BaseController;
 import cn.jihangyu.glowworm.common.resp.ApiResult;
 import cn.jihangyu.glowworm.common.utils.ResultUtil;
 import cn.jihangyu.glowworm.user.entity.User;
+import cn.jihangyu.glowworm.user.entity.UserElement;
 import cn.jihangyu.glowworm.user.service.UserService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -22,7 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("user")
-public class UserController {
+public class UserController extends BaseController{
     @Autowired
     @Qualifier("userServiceImpl")
     @Lazy
@@ -32,13 +34,16 @@ public class UserController {
     @ApiImplicitParam(name = "user", value = "用户详细实体user", required = true, dataType = "User")
     @RequestMapping(value = "/addUser",method = RequestMethod.POST)
     public ApiResult addUser(@RequestBody User user) throws Exception {
-        User user1=userService.addUser(user);
-        return ResultUtil.success(user1);
+        String token=userService.addUser(user);
+        return ResultUtil.success(token);
     }
     @ApiOperation(value="修改用户", notes="根据User对象修改用户")
     @ApiImplicitParam(name = "user", value = "用户详细实体user", required = true, dataType = "User")
     @RequestMapping(value = "/updateUser",method = RequestMethod.POST)
     public ApiResult updateUser(@RequestBody User user) throws Exception {
+        //用户id应该从后台获取，不能让前端传
+        UserElement ue=getCurrentUser();//这个方法应该是很多controller都可以用的，所以可以做一个BaseCOntroller
+        user.setUId(ue.getUserId());
         userService.updateUser(user);
         return ResultUtil.success(user);
     }
@@ -51,7 +56,9 @@ public class UserController {
     @ApiOperation(value="根据id删除用户", notes="根据id删除用户")
     @RequestMapping(value = "/deleteUser/{id}",method = RequestMethod.GET)
     public ApiResult deleteUser(@PathVariable int id) throws Exception {
-        userService.deleteUserById(id);
+        //用户id应该从后台获取，不能让前端传
+        UserElement ue=getCurrentUser();//这个方法应该是很多controller都可以用的，所以可以做一个BaseCOntroller
+        userService.deleteUserById(ue.getUserId());
         return ResultUtil.success("删除成功");
     }
 
