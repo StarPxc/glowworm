@@ -12,16 +12,24 @@
     <result column="b_owner_id" property="bOwnerId" jdbcType="INTEGER" />
     <result column="b_user_id" property="bUserId" jdbcType="INTEGER" />
     <result column="b_status" property="bStatus" jdbcType="VARCHAR" />
+    <result column="b_type" property="bType" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     b_id, b_name, b_author, b_publisher, b_price, b_isbn, b_barcode, b_owner_id, b_user_id, 
-    b_status
+    b_status, b_type
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from book
     where b_id = #{bId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByType" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from book
+    where b_type = #{bType,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from book
@@ -31,11 +39,11 @@
     insert into book (b_id, b_name, b_author, 
       b_publisher, b_price, b_isbn, 
       b_barcode, b_owner_id, b_user_id, 
-      b_status)
+      b_status, b_type)
     values (#{bId,jdbcType=INTEGER}, #{bName,jdbcType=VARCHAR}, #{bAuthor,jdbcType=VARCHAR}, 
       #{bPublisher,jdbcType=VARCHAR}, #{bPrice,jdbcType=VARCHAR}, #{bIsbn,jdbcType=VARCHAR}, 
       #{bBarcode,jdbcType=VARCHAR}, #{bOwnerId,jdbcType=INTEGER}, #{bUserId,jdbcType=INTEGER}, 
-      #{bStatus,jdbcType=VARCHAR})
+      #{bStatus,jdbcType=VARCHAR}, #{bType,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.jihangyu.glowworm.book.entity.Book" >
     insert into book
@@ -70,6 +78,9 @@
       <if test="bStatus != null" >
         b_status,
       </if>
+      <if test="bType != null" >
+        b_type,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="bId != null" >
@@ -101,6 +112,9 @@
       </if>
       <if test="bStatus != null" >
         #{bStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="bType != null" >
+        #{bType,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -134,6 +148,9 @@
       <if test="bStatus != null" >
         b_status = #{bStatus,jdbcType=VARCHAR},
       </if>
+      <if test="bType != null" >
+        b_type = #{bType,jdbcType=VARCHAR},
+      </if>
     </set>
     where b_id = #{bId,jdbcType=INTEGER}
   </update>
@@ -147,7 +164,8 @@
       b_barcode = #{bBarcode,jdbcType=VARCHAR},
       b_owner_id = #{bOwnerId,jdbcType=INTEGER},
       b_user_id = #{bUserId,jdbcType=INTEGER},
-      b_status = #{bStatus,jdbcType=VARCHAR}
+      b_status = #{bStatus,jdbcType=VARCHAR},
+      b_type = #{bType,jdbcType=VARCHAR}
     where b_id = #{bId,jdbcType=INTEGER}
   </update>
 </mapper>

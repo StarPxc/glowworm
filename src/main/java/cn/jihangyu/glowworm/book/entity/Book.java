@@ -21,6 +21,8 @@ public class Book {
 
     private String bStatus;
 
+    private String bType;
+
     public Integer getbId() {
         return bId;
     }
@@ -99,5 +101,13 @@ public class Book {
 
     public void setbStatus(String bStatus) {
         this.bStatus = bStatus == null ? null : bStatus.trim();
+    }
+
+    public String getbType() {
+        return bType;
+    }
+
+    public void setbType(String bType) {
+        this.bType = bType == null ? null : bType.trim();
     }
 }

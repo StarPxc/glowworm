@@ -2,6 +2,8 @@ package cn.jihangyu.glowworm.book.dao;
 
 import cn.jihangyu.glowworm.book.entity.Book;
 
+import java.util.List;
+
 public interface BookMapper {
     int deleteByPrimaryKey(Integer bId);
 
@@ -14,4 +16,6 @@ public interface BookMapper {
     int updateByPrimaryKeySelective(Book record);
 
     int updateByPrimaryKey(Book record);
+
+    List<Book> selectByType(String type);
 }
