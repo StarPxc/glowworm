@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.jihangyu.glowworm.userRemarkActivity.dao.UserRemarkActivityMapper">
+  <resultMap id="BaseResultMap" type="cn.jihangyu.glowworm.userRemarkActivity.entity.UserRemarkActivity">
+    <id column="ura_id" jdbcType="INTEGER" property="uraId" />
+    <result column="u_id" jdbcType="INTEGER" property="uId" />
+    <result column="a_id" jdbcType="INTEGER" property="aId" />
+    <result column="comment" jdbcType="VARCHAR" property="comment" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ura_id, u_id, a_id, comment, create_time
+  </sql>
+
+  <select id="selectUserRemarkActivitysByUId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_remark_activity
+    where u_id=#{uId}
+  </select>
+  <select id="selectUserRemarkActivitysByAId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_remark_activity
+    where a_id=#{aId}
+  </select>
+  <select id="selectUserRemarkActivitys" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_remark_activity
+  </select>
+  <select id="selectUserRemarkActivityByUIdAndAId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_remark_activity
+    where u_id=#{0} AND a_id=#{1}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_remark_activity
+    where ura_id = #{uraId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user_remark_activity
+    where ura_id = #{uraId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.jihangyu.glowworm.userRemarkActivity.entity.UserRemarkActivity"  useGeneratedKeys="true" keyProperty="uraId">
+    insert into user_remark_activity (ura_id, u_id, a_id, 
+      comment, create_time)
+    values (#{uraId,jdbcType=INTEGER}, #{uId,jdbcType=INTEGER}, #{aId,jdbcType=INTEGER}, 
+      #{comment,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.jihangyu.glowworm.userRemarkActivity.entity.UserRemarkActivity" useGeneratedKeys="true" keyProperty="uraId">
+    insert into user_remark_activity
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uraId != null">
+        ura_id,
+      </if>
+      <if test="uId != null">
+        u_id,
+      </if>
+      <if test="aId != null">
+        a_id,
+      </if>
+      <if test="comment != null">
+        comment,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uraId != null">
+        #{uraId,jdbcType=INTEGER},
+      </if>
+      <if test="uId != null">
+        #{uId,jdbcType=INTEGER},
+      </if>
+      <if test="aId != null">
+        #{aId,jdbcType=INTEGER},
+      </if>
+      <if test="comment != null">
+        #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.jihangyu.glowworm.userRemarkActivity.entity.UserRemarkActivity">
+    update user_remark_activity
+    <set>
+      <if test="uId != null">
+        u_id = #{uId,jdbcType=INTEGER},
+      </if>
+      <if test="aId != null">
+        a_id = #{aId,jdbcType=INTEGER},
+      </if>
+      <if test="comment != null">
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ura_id = #{uraId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.jihangyu.glowworm.userRemarkActivity.entity.UserRemarkActivity">
+    update user_remark_activity
+    set u_id = #{uId,jdbcType=INTEGER},
+      a_id = #{aId,jdbcType=INTEGER},
+      comment = #{comment,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where ura_id = #{uraId,jdbcType=INTEGER}
+  </update>
+</mapper>
