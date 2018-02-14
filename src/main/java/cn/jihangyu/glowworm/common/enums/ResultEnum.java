@@ -21,7 +21,9 @@ public enum ResultEnum {
     REDIS_INITIALIZATION_ERROR(507,"redis初始化失败"),
     NO_LOGIN(508,"未登录"),
     FILE_ERROR(509,"上传文件异常" ),
-    FILE_FORMAT_ERROR(510,"文件格式错误" ), FILE_TOO_BIG(511,"文件过大" );
+    FILE_FORMAT_ERROR(510,"文件格式错误" ), FILE_TOO_BIG(511,"文件过大" ),
+    CURRENT_USER_ERROR(511,"获取当前用户失败"),
+    NO_AUTHORITY(512,"没有权限");
     private Integer code;
     private String msg;
 
