@@ -189,8 +189,8 @@ public class ActivityServiceImpl implements ActivityService {
         if (file == null ) {
             throw new GlowwormExecption(ResultEnum.FILE_ERROR);
         }
-        //String folder= Constants.GLOWWORM_IMAGES_SRC+"activity";
-        String folder = "F:\\java_2018\\glowworm\\src\\main\\java\\cn\\jihangyu\\glowworm";
+        String folder= Constants.GLOWWORM_IMAGES_SRC+"activity";
+        //String folder = "F:\\java_2018\\glowworm\\src\\main\\java\\cn\\jihangyu\\glowworm";
         String []temps=file.getOriginalFilename().split("\\.");
         String fileSuffix = temps[temps.length-1];//取后缀名
         if (!fileSuffix.matches("\\b(bmp|BMP|jpg|JPG|png|PNG|JPEG|jpeg)\\b")) {

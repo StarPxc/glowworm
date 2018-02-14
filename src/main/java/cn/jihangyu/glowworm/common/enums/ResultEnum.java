@@ -23,7 +23,7 @@ public enum ResultEnum {
     FILE_ERROR(509,"上传文件异常" ),
     FILE_FORMAT_ERROR(510,"文件格式错误" ), FILE_TOO_BIG(511,"文件过大" ),
     CURRENT_USER_ERROR(511,"获取当前用户失败"),
-    NO_AUTHORITY(512,"没有权限");
+    NO_AUTHORITY(512,"没有权限"), NO_ID(513, "缺少id");
     private Integer code;
     private String msg;
 

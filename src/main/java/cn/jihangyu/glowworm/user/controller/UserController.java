@@ -1,6 +1,8 @@
 package cn.jihangyu.glowworm.user.controller;
 
 import cn.jihangyu.glowworm.common.base.BaseController;
+import cn.jihangyu.glowworm.common.enums.ResultEnum;
+import cn.jihangyu.glowworm.common.execption.GlowwormExecption;
 import cn.jihangyu.glowworm.common.resp.ApiResult;
 import cn.jihangyu.glowworm.common.utils.ResultUtil;
 import cn.jihangyu.glowworm.user.entity.User;
@@ -34,6 +36,9 @@ public class UserController extends BaseController{
     @ApiImplicitParam(name = "user", value = "用户详细实体user", required = true, dataType = "User")
     @RequestMapping(value = "/addUser",method = RequestMethod.POST)
     public ApiResult addUser(@RequestBody User user) throws Exception {
+//        if("admin".equals(user.getURole())){
+//            throw new GlowwormExecption(ResultEnum.NO_AUTHORITY);
+//        }
         String token=userService.addUser(user);
         return ResultUtil.success(token);
     }
@@ -41,24 +46,37 @@ public class UserController extends BaseController{
     @ApiImplicitParam(name = "user", value = "用户详细实体user", required = true, dataType = "User")
     @RequestMapping(value = "/updateUser",method = RequestMethod.POST)
     public ApiResult updateUser(@RequestBody User user) throws Exception {
-        //用户id应该从后台获取，不能让前端传
+        if(user.getUId()==null){
+            throw new GlowwormExecption(ResultEnum.NO_ID);
+        }
+        int id=0;
         UserElement ue=getCurrentUser();//这个方法应该是很多controller都可以用的，所以可以做一个BaseCOntroller
-        user.setUId(ue.getUserId());
+        if("admin".equals(ue.getRole())){
+            id=user.getUId();//如果是管理员，可以修改任何用户
+        }else {
+            //用户id应该从后台获取，不能让前端传
+            id=ue.getUserId();//普通用户只能修改自己
+        }
+        user.setUId(id);
         userService.updateUser(user);
         return ResultUtil.success(user);
     }
     @ApiOperation(value="根据id查找用户", notes="根据id查用户")
     @RequestMapping(value = "/getUser/{id}",method = RequestMethod.GET)
     public ApiResult getUser(@PathVariable int id) throws Exception {
+
         User user=userService.findUserById(id);
         return ResultUtil.success(user);
     }
     @ApiOperation(value="根据id删除用户", notes="根据id删除用户")
     @RequestMapping(value = "/deleteUser/{id}",method = RequestMethod.GET)
     public ApiResult deleteUser(@PathVariable int id) throws Exception {
-        //用户id应该从后台获取，不能让前端传
         UserElement ue=getCurrentUser();//这个方法应该是很多controller都可以用的，所以可以做一个BaseCOntroller
-        userService.deleteUserById(ue.getUserId());
+        if("admin".equals(ue.getRole())){
+            userService.deleteUserById(id);//只有管理员能删
+        }else {
+           throw new GlowwormExecption(ResultEnum.NO_AUTHORITY);
+        }
         return ResultUtil.success("删除成功");
     }
 

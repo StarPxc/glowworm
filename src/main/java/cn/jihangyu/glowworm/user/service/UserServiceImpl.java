@@ -65,6 +65,7 @@ public class UserServiceImpl implements UserService {
         UserElement ue = new UserElement();
         ue.setUserId(user.getUId());
         ue.setToken(token);
+        ue.setRole(user.getURole()==null?"user":user.getURole());
         cacheUtil.putTokenWhenLogin(ue);
         return token;
     }

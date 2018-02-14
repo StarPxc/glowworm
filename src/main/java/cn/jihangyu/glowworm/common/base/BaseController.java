@@ -32,6 +32,7 @@ public class BaseController {
             try {
                 UserElement ue=cacheUtil.getUserByToken(token);
                 if (ue != null) {
+
                     return ue;
                 }else {
                     throw new GlowwormExecption(ResultEnum.NO_LOGIN);

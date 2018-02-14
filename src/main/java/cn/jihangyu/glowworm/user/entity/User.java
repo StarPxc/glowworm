@@ -22,5 +22,6 @@ public class User {
 
     private String uSelfIntroduction;
 
+    private String uRole;
 
 }

@@ -11,12 +11,12 @@
     <result column="appointment_b_id" property="appointmentBId" jdbcType="INTEGER" />
     <result column="u_phone" property="uPhone" jdbcType="CHAR" />
     <result column="u_self_introduction" property="uSelfIntroduction" jdbcType="VARCHAR" />
+    <result column="u_role" property="uRole" jdbcType="CHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-  u_id, u_nickname, u_province, u_city, u_gender, u_email, appointment_b_id, u_phone,
-  u_self_introduction
-</sql>
-
+    u_id, u_nickname, u_province, u_city, u_gender, u_email, appointment_b_id, u_phone, 
+    u_self_introduction, u_role
+  </sql>
   <select id="selectUsersByActivityId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
     <include refid="Base_Column_List" />
@@ -27,23 +27,25 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from `user`
+    from user
     where u_id = #{uId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from user
     where u_id = #{uId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.jihangyu.glowworm.user.entity.User" useGeneratedKeys="true" keyProperty="uId">
+  <insert id="insert" parameterType="cn.jihangyu.glowworm.user.entity.User"  useGeneratedKeys="true" keyProperty="uId">
     insert into user (u_id, u_nickname, u_province, 
       u_city, u_gender, u_email, appointment_b_id, 
-      u_phone, u_self_introduction)
+      u_phone, u_self_introduction, u_role
+      )
     values (#{uId,jdbcType=INTEGER}, #{uNickname,jdbcType=CHAR}, #{uProvince,jdbcType=CHAR}, 
       #{uCity,jdbcType=CHAR}, #{uGender,jdbcType=CHAR}, #{uEmail,jdbcType=CHAR}, #{appointmentBId,jdbcType=INTEGER}, 
-      #{uPhone,jdbcType=CHAR}, #{uSelfIntroduction,jdbcType=VARCHAR})
+      #{uPhone,jdbcType=CHAR}, #{uSelfIntroduction,jdbcType=VARCHAR}, #{uRole,jdbcType=CHAR}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="cn.jihangyu.glowworm.user.entity.User" useGeneratedKeys="true" keyProperty="uId">
-    insert into `user`
+  <insert id="insertSelective" parameterType="cn.jihangyu.glowworm.user.entity.User" useGeneratedKeys="true" keyProperty="uId" >
+    insert into user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="uId != null" >
         u_id,
@@ -71,6 +73,9 @@
       </if>
       <if test="uSelfIntroduction != null" >
         u_self_introduction,
+      </if>
+      <if test="uRole != null" >
+        u_role,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -101,10 +106,13 @@
       <if test="uSelfIntroduction != null" >
         #{uSelfIntroduction,jdbcType=VARCHAR},
       </if>
+      <if test="uRole != null" >
+        #{uRole,jdbcType=CHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="cn.jihangyu.glowworm.user.entity.User" >
-    update `user`
+    update user
     <set >
       <if test="uNickname != null" >
         u_nickname = #{uNickname,jdbcType=CHAR},
@@ -130,11 +138,14 @@
       <if test="uSelfIntroduction != null" >
         u_self_introduction = #{uSelfIntroduction,jdbcType=VARCHAR},
       </if>
+      <if test="uRole != null" >
+        u_role = #{uRole,jdbcType=CHAR},
+      </if>
     </set>
     where u_id = #{uId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="cn.jihangyu.glowworm.user.entity.User" >
-    update `user`
+    update user
     set u_nickname = #{uNickname,jdbcType=CHAR},
       u_province = #{uProvince,jdbcType=CHAR},
       u_city = #{uCity,jdbcType=CHAR},
@@ -142,7 +153,8 @@
       u_email = #{uEmail,jdbcType=CHAR},
       appointment_b_id = #{appointmentBId,jdbcType=INTEGER},
       u_phone = #{uPhone,jdbcType=CHAR},
-      u_self_introduction = #{uSelfIntroduction,jdbcType=VARCHAR}
+      u_self_introduction = #{uSelfIntroduction,jdbcType=VARCHAR},
+      u_role = #{uRole,jdbcType=CHAR}
     where u_id = #{uId,jdbcType=INTEGER}
   </update>
 </mapper>

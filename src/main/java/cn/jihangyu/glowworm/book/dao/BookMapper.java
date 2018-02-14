@@ -1,9 +1,10 @@
 package cn.jihangyu.glowworm.book.dao;
 
 import cn.jihangyu.glowworm.book.entity.Book;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
-
+@Component
 public interface BookMapper {
     int deleteByPrimaryKey(Integer bId);
 

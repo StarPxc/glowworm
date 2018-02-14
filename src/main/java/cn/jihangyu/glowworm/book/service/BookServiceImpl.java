@@ -73,6 +73,7 @@ public class BookServiceImpl implements  BookService{
     @Override
     public Book findBookById(int id) {
         Book book=null;
+        rlock.lock();
         try{
             book=bookMapper.selectByPrimaryKey(id);
             if(book==null){
@@ -82,6 +83,8 @@ public class BookServiceImpl implements  BookService{
         }catch(GlowwormExecption e){
             log.error("【查找id为】"+id+"的书失败");
             throw new GlowwormExecption(ResultEnum.OBJECT_FIND_ERROR);
+        }finally {
+            rlock.unlock();
         }
         return book;
     }
@@ -89,6 +92,7 @@ public class BookServiceImpl implements  BookService{
     @Override
     public List<Book> findBookByType(String type) {
         List<Book> books=null;
+        rlock.lock();
         try{
             books=bookMapper.selectByType(type);
             if(books==null){
@@ -98,6 +102,8 @@ public class BookServiceImpl implements  BookService{
         }catch(GlowwormExecption e){
             log.error("【查找type为】"+type+"的书失败");
             throw new GlowwormExecption(ResultEnum.OBJECT_FIND_ERROR);
+        }finally {
+            rlock.unlock();
         }
         return books;
     }

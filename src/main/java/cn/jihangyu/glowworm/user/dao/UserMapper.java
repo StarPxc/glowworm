@@ -2,10 +2,10 @@ package cn.jihangyu.glowworm.user.dao;
 
 import cn.jihangyu.glowworm.user.entity.User;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
-@Repository
+
+@Component
 public interface UserMapper {
     int deleteByPrimaryKey(Integer uId);
 
@@ -18,7 +18,6 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
-
 
     List<User> selectUsersByActivityId(Integer id);
 }
