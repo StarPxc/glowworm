@@ -25,6 +25,20 @@
     where b_id = #{bId,jdbcType=INTEGER}
   </select>
 
+  <select id="selectAllHadByUid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from book
+    where b_owner_id = #{bOwnerId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectAllUsedByUid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from book
+    where b_user_id = #{bUserId,jdbcType=INTEGER}
+  </select>
+
   <select id="selectByType" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
     <include refid="Base_Column_List" />

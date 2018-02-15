@@ -34,6 +34,7 @@ public class UAServiceImpl implements UAService {
     private UserMapper userMapper;
     @Autowired
     private ActivityMapper activityMapper;
+
     private static ReadWriteLock lock = new ReentrantReadWriteLock(false);
     private static Lock rlock = lock.readLock();
     private static Lock wlock = lock.writeLock();
