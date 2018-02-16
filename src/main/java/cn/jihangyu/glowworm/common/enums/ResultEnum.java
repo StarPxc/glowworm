@@ -13,7 +13,7 @@ public enum ResultEnum {
     OBJECT_NULL_ERROR(501,"对象不能为空"),
     OBJECT_ADD_ERROR(502,"添加对象失败"),
     OBJECT_ALL_Field_NULL(503,"对象所有属性为空"),
-    OBJECT_FIND_ERROR(504,"查询的对象不存在"),
+    OBJECT_FIND_ERROR(504,"查询对象失败"),
     OBJECT_DELETE_ERROR(505,"删除对象失败"),
     OBJECT_UPDATE_ERROR(506,"更新对象失败"),
     NO_USER(507,"用户不存在"),
@@ -23,7 +23,13 @@ public enum ResultEnum {
     FILE_ERROR(509,"上传文件异常" ),
     FILE_FORMAT_ERROR(510,"文件格式错误" ), FILE_TOO_BIG(511,"文件过大" ),
     CURRENT_USER_ERROR(511,"获取当前用户失败"),
-    NO_AUTHORITY(512,"没有权限"), NO_ID(513, "缺少id");
+    NO_AUTHORITY(512,"没有权限"), NO_ID(513, "缺少id"),
+    //关于书
+    BOOK_ORDERD(601,"图书已被预定"),
+    BOOK_NOT_ORDERD(602,"图书未被预定"),
+    ORDER_ERROR(603,"预定图书失败"),
+    RETURN_ERROR(604,"归还图书失败");
+
     private Integer code;
     private String msg;
 

@@ -42,6 +42,8 @@ public class UserController extends BaseController{
         String token=userService.addUser(user);
         return ResultUtil.success(token);
     }
+
+
     @ApiOperation(value="修改用户", notes="根据User对象修改用户")
     @ApiImplicitParam(name = "user", value = "用户详细实体user", required = true, dataType = "User")
     @RequestMapping(value = "/updateUser",method = RequestMethod.POST)

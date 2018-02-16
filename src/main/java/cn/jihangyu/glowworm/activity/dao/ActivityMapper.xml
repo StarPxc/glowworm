@@ -11,6 +11,7 @@
     <result column="a_imgs" property="aImgs" jdbcType="VARCHAR" />
     <result column="total_number_of_registration" property="totalNumberOfRegistration" jdbcType="INTEGER" />
   </resultMap>
+
   <sql id="Base_Column_List" >
     a_id, a_title, a_introduction, a_start_time, a_end_time, a_state, a_imgs, total_number_of_registration
   </sql>
