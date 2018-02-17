@@ -7,13 +7,13 @@ import java.util.List;
 
 @Component
 public interface UserMapper {
-    int deleteByPrimaryKey(Integer uId);
+    int deleteByPrimaryKey(String uId);
 
     int insert(User record);
 
     int insertSelective(User record);
 
-    User selectByPrimaryKey(Integer uId);
+    User selectByPrimaryKey(String uId);
 
     int updateByPrimaryKeySelective(User record);
 

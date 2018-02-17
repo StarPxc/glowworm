@@ -31,5 +31,5 @@ public interface UserRemarkActivityService {
      * @param aId 活动id
      * @return
      */
-    List<UserRemarkActivity> selectUserRemarkActivitysByUIdAndAId(Integer uId, Integer aId);
+    List<UserRemarkActivity> selectUserRemarkActivitysByUIdAndAId(String uId, Integer aId);
 }

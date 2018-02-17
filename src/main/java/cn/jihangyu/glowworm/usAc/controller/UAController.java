@@ -46,9 +46,9 @@ public class UAController {
         return ResultUtil.success(users);
     }
     @ApiOperation(value="根据用户id和活动状态查找他参加的活动", notes="{1：未进行，2：正在进行，3：已结束，0:所有)")
-    @RequestMapping(value = "/findActiviysByUserId/{id}/{state}",method = RequestMethod.GET)
-    public ApiResult findActiviysByUserId(@PathVariable int id,@PathVariable int state) throws Exception {
-        List<Activity> activities=uaService.findActiviysByUserId(id,state);
+    @RequestMapping(value = "/findActiviysByUserId",method = RequestMethod.POST)
+    public ApiResult findActiviysByUserId(@RequestParam String openid,@RequestParam int state) throws Exception {
+        List<Activity> activities=uaService.findActiviysByUserId(openid,state);
         return ResultUtil.success(activities);
     }
 

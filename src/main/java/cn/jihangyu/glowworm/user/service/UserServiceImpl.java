@@ -5,15 +5,23 @@ import cn.jihangyu.glowworm.cache.CommonCacheUtil;
 import cn.jihangyu.glowworm.common.enums.ResultEnum;
 import cn.jihangyu.glowworm.common.execption.GlowwormExecption;
 import cn.jihangyu.glowworm.common.utils.MD5Util;
-import cn.jihangyu.glowworm.common.utils.MyUtil;
 import cn.jihangyu.glowworm.user.dao.UserMapper;
 import cn.jihangyu.glowworm.user.entity.User;
 import cn.jihangyu.glowworm.user.entity.UserElement;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.Time;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
@@ -38,51 +46,19 @@ public class UserServiceImpl implements UserService {
     private static ReadWriteLock lock = new ReentrantReadWriteLock(false);
     private static Lock rlock = lock.readLock();
     private static Lock wlock = lock.writeLock();
-    @Override
-    public String addUser(User user) throws Exception {
-        String token = null;
-        if(user==null){
-            throw new GlowwormExecption(ResultEnum.OBJECT_NULL_ERROR);
-        }
-        if(MyUtil.isAllFieldNull(user)){
-            throw new GlowwormExecption(ResultEnum.OBJECT_ALL_Field_NULL);
-        }
-
-        wlock.lock();
-        try {
-            userMapper.insertSelective(user);
-            token = generateToken(user);
-        }catch (Exception e){
-            log.error("【添加对象失败】",e);
-            throw new GlowwormExecption(ResultEnum.OBJECT_ADD_ERROR);
-        }finally {
-            wlock.unlock();
-        }
-        /*
-         * token相当于session而session是有获得用户信息的功能，进MD5加密后的token不具备
-         * 所以我们应该把token作为key，把用户信息作为值存入redis，在通过用户的id得到他的token
-         */
-        UserElement ue = new UserElement();
-        ue.setUserId(user.getUId());
-        ue.setToken(token);
-        ue.setRole(user.getURole()==null?"user":user.getURole());
-        cacheUtil.putTokenWhenLogin(ue);
-        return token;
-    }
 
     /**
      * 生成token
-     *
-     * @param user
+      * @param openid
      * @return
      */
-    private String generateToken(User user) {
-        String source = user.getUId() +":" + System.currentTimeMillis();
+    private String generateToken(String openid) {
+        String source = openid +":" + System.currentTimeMillis();
         return MD5Util.getMD5(source);
     }
 
     @Override
-    public User findUserById(Integer id) {
+    public User findUserById(String id) {
         User user;
         rlock.lock();
         try {
@@ -98,16 +74,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(User user) {
+        if(user==null){
+            throw new GlowwormExecption(ResultEnum.OBJECT_FIND_ERROR);
+        }
         wlock.lock();
         try {
-            int code= userMapper.updateByPrimaryKeySelective(user);
-            if(code!=1){
-                throw new GlowwormExecption(ResultEnum.OBJECT_FIND_ERROR);
-            }
+           userMapper.updateByPrimaryKeySelective(user);
         }catch (GlowwormExecption e){
-            throw new GlowwormExecption(ResultEnum.OBJECT_FIND_ERROR);
-        }catch (Exception e){
-            log.error("【修改用户失败】",e);
             throw new GlowwormExecption(ResultEnum.OBJECT_UPDATE_ERROR);
         }finally {
             wlock.unlock();
@@ -115,8 +88,8 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    @Override
-    public void deleteUserById(Integer id) {
+/*    @Override
+    public void deleteUserById(String id) {
         if(id==null){
             throw new GlowwormExecption(ResultEnum.OBJECT_NULL_ERROR);
         }
@@ -137,6 +110,45 @@ public class UserServiceImpl implements UserService {
         }finally {
             wlock.unlock();
         }
+    }*/
+
+    @Override
+    public String login(String code) throws IOException {
+        String openid="";
+        //用code换取openid
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpGet httpGet = new HttpGet("https://api.weixin.qq.com/sns/jscode2session?appid=wx5b6154ad63c373f5&secret=372569bcf02ffd02b6992f5e4a36d586&js_code="+code+"&grant_type=authorization_code");
+        CloseableHttpResponse httpResponse = httpClient.execute(httpGet);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(
+                httpResponse.getEntity().getContent()));
+        String inputLine;
+        StringBuilder response = new StringBuilder();
+        while ((inputLine = reader.readLine()) != null) {
+            response.append(inputLine);
+        }
+        reader.close();
+        httpClient.close();
+        String wxInfo=response.toString();
+        JSONObject jsonObject=JSON.parseObject(wxInfo);
+        if(jsonObject.containsKey("openid")){
+            openid= (String) jsonObject.get("openid");
+        }else {
+            throw new GlowwormExecption(ResultEnum.IDENTITY_AUTHENTICATION_FAILURE);
+        }
+
+        //查找用户是否存在
+        User user=userMapper.selectByPrimaryKey(openid);
+        if(user==null){
+            User newUser=new User();
+            newUser.setUId(openid);
+           userMapper.insertSelective(newUser);
+        }
+        String token= generateToken(openid);//生成token
+        UserElement ue=new UserElement();
+        ue.setToken(token);
+        ue.setUserId(openid);
+        cacheUtil.putTokenWhenLogin(ue);//把token 存入缓存
+        return token;
     }
 
 

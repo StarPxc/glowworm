@@ -131,7 +131,7 @@ public class CommonCacheUtil {
                 try {
                     //trans.del(TOKEN_PREFIX + ue.getToken());
                     trans.hmset(TOKEN_PREFIX + ue.getToken(), ue.toMap());
-                    //trans.expire(TOKEN_PREFIX + ue.getToken(), 2592000);
+                    trans.expire(TOKEN_PREFIX + ue.getToken(), 2592000);//一个月
                     trans.sadd(USER_PREFIX + ue.getUserId(), ue.getToken());
                     trans.exec();
                 } catch (Exception e) {

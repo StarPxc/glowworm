@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class User {
-    private Integer uId;
+    private String uId;
 
     private String uNickname;
 
@@ -24,4 +24,4 @@ public class User {
 
     private String uRole;
 
-}
+   }

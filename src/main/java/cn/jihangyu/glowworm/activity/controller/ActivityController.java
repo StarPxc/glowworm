@@ -13,7 +13,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -41,7 +40,7 @@ public class ActivityController extends BaseController{
         return ResultUtil.success(activity);
     }
 
-    @ApiOperation(value = "创建活动", notes = "根据活动对象创建用户")
+/*    @ApiOperation(value = "创建活动", notes = "根据活动对象创建用户")
     @ApiImplicitParam(name = "activity", value = "活动详细实体activity", required = true, dataType = "Activity")
     @RequestMapping(value = "/addActivity", method = RequestMethod.POST)
     public ApiResult addActivity(@RequestBody Activity activity) throws Exception {
@@ -54,7 +53,7 @@ public class ActivityController extends BaseController{
             throw new GlowwormExecption(ResultEnum.NO_AUTHORITY);
         }
 
-    }
+    }*/
 
     @ApiOperation(value = "修改活动", notes = "根据活动对象修改用户")
     @ApiImplicitParam(name = "activity", value = "活动详细实体activity", required = true, dataType = "Activity")
@@ -64,7 +63,7 @@ public class ActivityController extends BaseController{
         return ResultUtil.success(activity);
     }
 
-    @ApiOperation(value = "根据id删除活动", notes = "根据id删除活动")
+/*    @ApiOperation(value = "根据id删除活动", notes = "根据id删除活动")
     @RequestMapping(value = "/deleteActivity/{id}", method = RequestMethod.GET)
     public ApiResult deleteActivity(@PathVariable Integer id) throws Exception {
         UserElement ue=getCurrentUser();
@@ -75,7 +74,7 @@ public class ActivityController extends BaseController{
             throw new GlowwormExecption(ResultEnum.NO_AUTHORITY);
         }
 
-    }
+    }*/
 
     @ApiOperation(value = "查找不同类型的活动", notes = "{1：未进行，2：正在进行，3：已结束，0:所有)")
     @RequestMapping(value = "/findActiviysByState/{state}", method = RequestMethod.GET)
@@ -95,9 +94,6 @@ public class ActivityController extends BaseController{
     public ApiResult upload(@RequestParam("file") MultipartFile file, @RequestParam Integer aId) throws IOException {
             String resultFileName=activityService.upload(file,aId);
             return ResultUtil.success(resultFileName);
-
-
-
-
     }
+
 }

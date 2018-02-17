@@ -19,9 +19,9 @@ public interface ActivityMapper {
 
     int updateByPrimaryKey(Activity record);
 
-    List<Activity> selectActiviysByUserId(Integer id, Integer state);
+    List<Activity> selectActiviysByUserId(String id, Integer state);
 
-    List<Activity> selectAllActiviysByUserId(Integer id);
+    List<Activity> selectAllActiviysByUserId(String id);
 
     List<Activity> selectAllActiviys();
 

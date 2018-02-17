@@ -15,12 +15,8 @@ import java.util.Map;
 @Data
 public class UserElement {
 
-    private int userId;
-
-
+    private String userId;
     private String token;
-
-    private String role;
 
 
     /**
@@ -32,7 +28,6 @@ public class UserElement {
         Map<String, String> map = new HashMap<String, String>();
         map.put("userId", this.userId + "");
         map.put("token", token);
-        map.put("role",role);
 
         return map;
     }
@@ -46,8 +41,7 @@ public class UserElement {
     public static UserElement fromMap(Map<String, String> map) {
         UserElement ue = new UserElement();
         ue.setToken(map.get("token"));
-        ue.setUserId(Integer.parseInt(map.get("userId")));
-        ue.setRole(map.get("role"));
+        ue.setUserId(map.get("userId"));
         return ue;
     }
 }

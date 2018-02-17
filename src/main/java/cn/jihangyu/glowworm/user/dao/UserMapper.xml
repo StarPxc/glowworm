@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.jihangyu.glowworm.user.dao.UserMapper" >
   <resultMap id="BaseResultMap" type="cn.jihangyu.glowworm.user.entity.User" >
-    <id column="u_id" property="uId" jdbcType="INTEGER" />
+    <id column="u_id" property="uId" jdbcType="VARCHAR" />
     <result column="u_nickname" property="uNickname" jdbcType="CHAR" />
     <result column="u_province" property="uProvince" jdbcType="CHAR" />
     <result column="u_city" property="uCity" jdbcType="CHAR" />
@@ -24,27 +24,27 @@
     WHERE `user`.u_id in (SELECT `user`.u_id FROM us_ac,`user` WHERE `user`.u_id = us_ac.u_id
     AND us_ac.a_id=#{id})
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from user
-    where u_id = #{uId,jdbcType=INTEGER}
+    where u_id = #{uId,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from user
-    where u_id = #{uId,jdbcType=INTEGER}
+    where u_id = #{uId,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="cn.jihangyu.glowworm.user.entity.User"  useGeneratedKeys="true" keyProperty="uId">
+  <insert id="insert" parameterType="cn.jihangyu.glowworm.user.entity.User" >
     insert into user (u_id, u_nickname, u_province, 
       u_city, u_gender, u_email, appointment_b_id, 
       u_phone, u_self_introduction, u_role
       )
-    values (#{uId,jdbcType=INTEGER}, #{uNickname,jdbcType=CHAR}, #{uProvince,jdbcType=CHAR}, 
+    values (#{uId,jdbcType=VARCHAR}, #{uNickname,jdbcType=CHAR}, #{uProvince,jdbcType=CHAR}, 
       #{uCity,jdbcType=CHAR}, #{uGender,jdbcType=CHAR}, #{uEmail,jdbcType=CHAR}, #{appointmentBId,jdbcType=INTEGER}, 
       #{uPhone,jdbcType=CHAR}, #{uSelfIntroduction,jdbcType=VARCHAR}, #{uRole,jdbcType=CHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="cn.jihangyu.glowworm.user.entity.User" useGeneratedKeys="true" keyProperty="uId" >
+  <insert id="insertSelective" parameterType="cn.jihangyu.glowworm.user.entity.User" >
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="uId != null" >
@@ -80,7 +80,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="uId != null" >
-        #{uId,jdbcType=INTEGER},
+        #{uId,jdbcType=VARCHAR},
       </if>
       <if test="uNickname != null" >
         #{uNickname,jdbcType=CHAR},
@@ -142,7 +142,7 @@
         u_role = #{uRole,jdbcType=CHAR},
       </if>
     </set>
-    where u_id = #{uId,jdbcType=INTEGER}
+    where u_id = #{uId,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="cn.jihangyu.glowworm.user.entity.User" >
     update user
@@ -155,6 +155,6 @@
       u_phone = #{uPhone,jdbcType=CHAR},
       u_self_introduction = #{uSelfIntroduction,jdbcType=VARCHAR},
       u_role = #{uRole,jdbcType=CHAR}
-    where u_id = #{uId,jdbcType=INTEGER}
+    where u_id = #{uId,jdbcType=VARCHAR}
   </update>
 </mapper>

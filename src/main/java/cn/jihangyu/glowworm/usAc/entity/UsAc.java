@@ -3,7 +3,7 @@ package cn.jihangyu.glowworm.usAc.entity;
 public class UsAc {
     private Integer uaId;
 
-    private Integer uId;
+    private String uId;
 
     private Integer aId;
 
@@ -15,12 +15,12 @@ public class UsAc {
         this.uaId = uaId;
     }
 
-    public Integer getuId() {
+    public String getuId() {
         return uId;
     }
 
-    public void setuId(Integer uId) {
-        this.uId = uId;
+    public void setuId(String uId) {
+        this.uId = uId == null ? null : uId.trim();
     }
 
     public Integer getaId() {

@@ -18,10 +18,9 @@ public interface UserRemarkActivityMapper {
     int updateByPrimaryKeySelective(UserRemarkActivity record);
 
     int updateByPrimaryKey(UserRemarkActivity record);
+    List<UserRemarkActivity> selectUserRemarkActivityByUIdAndAId(String uId, Integer aId);
 
-    List<UserRemarkActivity>   selectUserRemarkActivityByUIdAndAId(Integer uId, Integer aId);
-
-    List<UserRemarkActivity>  selectUserRemarkActivitysByUId(Integer uId);
+    List<UserRemarkActivity>  selectUserRemarkActivitysByUId(String uId);
 
     List<UserRemarkActivity>  selectUserRemarkActivitysByAId(Integer aId);
 

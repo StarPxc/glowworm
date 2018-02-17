@@ -39,8 +39,8 @@ public class UserRemarkActivityController {
         return ResultUtil.success("删除成功");
     }
     @ApiOperation(value="根据用户id和活动id查看用户评论活动的记录", notes="根据用户id和活动id查看用户评论活动的记录id是0表示所有")
-    @RequestMapping(value = "/findUserRemarkActivityByUIdAndAId/{uId}/{aId}",method = RequestMethod.GET)
-    public ApiResult findUserRemarkActivityByUIdAndAId(@PathVariable Integer uId,@PathVariable Integer aId) throws Exception {
+    @RequestMapping(value = "/findUserRemarkActivityByUIdAndAId",method = RequestMethod.POST)
+    public ApiResult findUserRemarkActivityByUIdAndAId(@RequestParam String uId,@RequestParam Integer aId) throws Exception {
         List<UserRemarkActivity> userRemarkActivitys=userRemarkActivityService.selectUserRemarkActivitysByUIdAndAId(uId,aId);
         return ResultUtil.success(userRemarkActivitys);
     }

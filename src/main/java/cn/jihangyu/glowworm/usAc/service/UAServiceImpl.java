@@ -34,7 +34,6 @@ public class UAServiceImpl implements UAService {
     private UserMapper userMapper;
     @Autowired
     private ActivityMapper activityMapper;
-
     private static ReadWriteLock lock = new ReentrantReadWriteLock(false);
     private static Lock rlock = lock.readLock();
     private static Lock wlock = lock.writeLock();
@@ -101,7 +100,7 @@ public class UAServiceImpl implements UAService {
         return users;
     }
     @Override
-    public List<Activity> findActiviysByUserId(Integer id, Integer state) {
+    public List<Activity> findActiviysByUserId(String id, Integer state) {
         List<Activity> activities;
         if(id==null||state==null){
             throw new GlowwormExecption(ResultEnum.OBJECT_NULL_ERROR);

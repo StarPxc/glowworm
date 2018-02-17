@@ -72,26 +72,26 @@ public class UserRemarkActivityServiceImpl implements UserRemarkActivityService{
     }
 
     @Override
-    public List<UserRemarkActivity> selectUserRemarkActivitysByUIdAndAId(Integer uId, Integer aId) {
+    public List<UserRemarkActivity> selectUserRemarkActivitysByUIdAndAId(String uId, Integer aId) {
         List<UserRemarkActivity>   userRemarkActivitys;
         if(uId==null||aId==null) {
             throw new GlowwormExecption(ResultEnum.OBJECT_NULL_ERROR);
         }
-        if(uId==0&&aId!=0){
+        if(uId.equals("0")&&aId!=0){
             rlock.lock();
             try {
                 userRemarkActivitys=userRemarkActivityMapper.selectUserRemarkActivitysByAId(aId);
             }finally {
                 rlock.unlock();
             }
-        }else if(uId!=0&&aId==0){
+        }else if(!uId.equals("0")&&aId==0){
             rlock.lock();
             try {
                 userRemarkActivitys=userRemarkActivityMapper.selectUserRemarkActivitysByUId(uId);
             }finally {
                 rlock.unlock();
             }
-        }else if(uId==0&&aId==0){
+        }else if(uId.equals("0")&&aId==0){
             rlock.lock();
             try {
                 userRemarkActivitys=userRemarkActivityMapper.selectUserRemarkActivitys();

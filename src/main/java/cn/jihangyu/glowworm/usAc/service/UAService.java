@@ -34,9 +34,9 @@ public interface UAService {
     List<User> findUsersByActivityId(Integer id);
     /**
      * 根据用户id和活动状态查找他参加的的活动{1：未进行，2：正在进行，3：已结束，0所有}
-     * @param id 用户id
+     * @param uId 用户id
      * @param state 活动状态
      * @return 活动集合
      */
-    List<Activity> findActiviysByUserId(Integer id, Integer state);
+    List<Activity> findActiviysByUserId(String uId, Integer state);
 }
