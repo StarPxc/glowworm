@@ -1,6 +1,7 @@
-package cn.jihangyu.mamabike.common.utils;
+package cn.jihangyu.glowworm.common.utils;
 
-import cn.jihangyu.mamabike.common.constants.Constants;
+
+import cn.jihangyu.glowworm.common.constants.Constants;
 import com.google.gson.Gson;
 import com.qiniu.common.Zone;
 import com.qiniu.http.Response;
@@ -14,7 +15,7 @@ import java.io.IOException;
 
 
 public class QiniuFileUploadUtil {
-    public static String uploadHeadImg(MultipartFile file) throws IOException {
+    public static String uploadBookImg(MultipartFile file) throws IOException {
 
         Configuration cfg = new Configuration(Zone.zone0());
         UploadManager uploadManager = new UploadManager(cfg);
