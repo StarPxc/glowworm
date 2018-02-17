@@ -17,7 +17,7 @@ public class UserElement {
 
     private String userId;
     private String token;
-
+    private String role;
 
     /**
      * 转 map
@@ -28,7 +28,7 @@ public class UserElement {
         Map<String, String> map = new HashMap<String, String>();
         map.put("userId", this.userId + "");
         map.put("token", token);
-
+        map.put("role",role);
         return map;
     }
 
@@ -42,6 +42,7 @@ public class UserElement {
         UserElement ue = new UserElement();
         ue.setToken(map.get("token"));
         ue.setUserId(map.get("userId"));
+        ue.setRole(map.get("role"));
         return ue;
     }
 }

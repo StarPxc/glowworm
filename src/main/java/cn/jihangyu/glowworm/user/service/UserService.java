@@ -31,7 +31,7 @@ public interface UserService {
      * 根据id删除用户
      * @param openid
      */
-    //void deleteUserById(String openid);
+    void deleteUserById(String openid);
 
     /**
      * 登录

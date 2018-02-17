@@ -47,6 +47,7 @@ public class UserController extends BaseController{
         //用户id应该从后台获取，不能让前端传
         String id=ue.getUserId();
         user.setUId(id);
+        user.setURole("user");//权限只能通过直接操作数据库修改
         userService.updateUser(user);
         return ResultUtil.success(user);
     }
@@ -56,9 +57,9 @@ public class UserController extends BaseController{
         User user=userService.findUserById(openid);
         return ResultUtil.success(user);
     }
-    /*@ApiOperation(value="根据id删除用户", notes="根据id删除用户")
+    @ApiOperation(value="根据id删除用户", notes="根据id删除用户")
     @RequestMapping(value = "/deleteUser/{id}",method = RequestMethod.GET)
-    public ApiResult deleteUser(@PathVariable int id) throws Exception {
+    public ApiResult deleteUser(@PathVariable String id) throws Exception {
         UserElement ue=getCurrentUser();//这个方法应该是很多controller都可以用的，所以可以做一个BaseCOntroller
         if("admin".equals(ue.getRole())){
             userService.deleteUserById(id);//只有管理员能删
@@ -66,8 +67,7 @@ public class UserController extends BaseController{
            throw new GlowwormExecption(ResultEnum.NO_AUTHORITY);
         }
         return ResultUtil.success("删除成功");
-    }*/
-
+    }
 
     @ApiOperation(value = "用户登录", notes = "用户登录")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
