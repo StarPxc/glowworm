@@ -23,6 +23,8 @@ public class Book {
 
     private String bType;
 
+    private String bImg;
+
     public Integer getbId() {
         return bId;
     }
@@ -109,5 +111,13 @@ public class Book {
 
     public void setbType(String bType) {
         this.bType = bType == null ? null : bType.trim();
+    }
+
+    public String getbImg() {
+        return bImg;
+    }
+
+    public void setbImg(String bImg) {
+        this.bImg = bImg == null ? null : bImg.trim();
     }
 }

@@ -5,9 +5,11 @@ import cn.jihangyu.glowworm.book.entity.Book;
 import cn.jihangyu.glowworm.common.enums.ResultEnum;
 import cn.jihangyu.glowworm.common.execption.GlowwormExecption;
 import cn.jihangyu.glowworm.common.utils.MyUtil;
+import cn.jihangyu.glowworm.common.utils.QiniuFileUploadUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.concurrent.locks.Lock;
@@ -128,6 +130,28 @@ public class BookServiceImpl implements  BookService{
 
         }finally {
             wlock.unlock();
+        }
+    }
+
+    @Override
+    public String uploadBookImgs(MultipartFile[] files, Integer bid) {
+        try{
+            Book book=bookMapper.selectByPrimaryKey(bid);
+            if(book==null){
+                throw  new GlowwormExecption(ResultEnum.OBJECT_NULL_ERROR);
+            }
+            Integer size=files.length;
+            String urls="";
+            for(MultipartFile file:files){
+                String img_url=QiniuFileUploadUtil.uploadBookImg(file);
+                urls=urls+img_url+",";
+            }
+            book.setbImg(urls);
+            bookMapper.updateByPrimaryKeySelective(book);
+            return size.toString();
+        }catch (Exception e){
+            log.error("上传书的图片失败");
+            throw new GlowwormExecption(ResultEnum.FILE_ERROR);
         }
     }
 }
