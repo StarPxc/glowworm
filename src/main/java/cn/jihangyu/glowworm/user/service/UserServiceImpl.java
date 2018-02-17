@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService {
         String openid="";
         //用code换取openid
         CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpGet httpGet = new HttpGet("https://api.weixin.qq.com/sns/jscode2session?appid=wx5b6154ad63c373f5&secret=372569bcf02ffd02b6992f5e4a36d586&js_code="+code+"&grant_type=authorization_code");
+        HttpGet httpGet = new HttpGet("https://api.weixin.qq.com/sns/jscode2session?appid=wx3e09d2514a3f1cd5&secret=d7e5c9d67ea52022ddfa47385fea35d6&js_code="+code+"&grant_type=authorization_code");
         CloseableHttpResponse httpResponse = httpClient.execute(httpGet);
         BufferedReader reader = new BufferedReader(new InputStreamReader(
                 httpResponse.getEntity().getContent()));
@@ -129,6 +129,7 @@ public class UserServiceImpl implements UserService {
         reader.close();
         httpClient.close();
         String wxInfo=response.toString();
+        log.info(wxInfo);
         JSONObject jsonObject=JSON.parseObject(wxInfo);
         if(jsonObject.containsKey("openid")){
             openid= (String) jsonObject.get("openid");

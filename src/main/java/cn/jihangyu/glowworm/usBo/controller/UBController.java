@@ -23,7 +23,7 @@ public class UBController extends BaseController{
     @Qualifier("UBServiceImpl")
     private UBService ubService;
 
-    @ApiOperation(value = "用户查询自己拥有的书",notes = "用户查询自己拥有的书")
+   /* @ApiOperation(value = "用户查询自己拥有的书",notes = "用户查询自己拥有的书")
     @RequestMapping(value = "/findAllHadBookByUid/{id}",method = RequestMethod.GET)
     public ApiResult findAllHadBookByUid(@PathVariable int id){
         UserElement ue=getCurrentUser();//用户只能查看自己拥有的书
@@ -39,9 +39,9 @@ public class UBController extends BaseController{
         }catch (Exception e){
             return ResultUtil.error(ResultEnum.OBJECT_FIND_ERROR.getCode(),ResultEnum.OBJECT_FIND_ERROR.getMsg());
         }
-    }
+    }*/
 
-    @ApiOperation(value = "用户查询自己正在使用的书",notes = "用户查询自己正在使用的书")
+    /*@ApiOperation(value = "用户查询自己正在使用的书",notes = "用户查询自己正在使用的书")
     @RequestMapping(value = "/findAllUsedBookByUid/{id}",method = RequestMethod.GET)
     public ApiResult findAllUsedBookByUid(@PathVariable int id){
         UserElement ue=getCurrentUser();//用户只能查看自己正在使用的书
@@ -57,7 +57,7 @@ public class UBController extends BaseController{
         }catch (Exception e){
             return ResultUtil.error(ResultEnum.OBJECT_FIND_ERROR.getCode(),ResultEnum.OBJECT_FIND_ERROR.getMsg());
         }
-    }
+    }*/
 
     @ApiOperation(value = "用户预约某本书",notes = "用户预约某本书")
     @RequestMapping(value = "/orderBook",method = RequestMethod.POST)
