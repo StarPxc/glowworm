@@ -9,8 +9,8 @@
     <result column="b_price" property="bPrice" jdbcType="VARCHAR" />
     <result column="b_isbn" property="bIsbn" jdbcType="VARCHAR" />
     <result column="b_barcode" property="bBarcode" jdbcType="VARCHAR" />
-    <result column="b_owner_id" property="bOwnerId" jdbcType="INTEGER" />
-    <result column="b_user_id" property="bUserId" jdbcType="INTEGER" />
+    <result column="b_owner_id" property="bOwnerId" jdbcType="VARCHAR" />
+    <result column="b_user_id" property="bUserId" jdbcType="VARCHAR" />
     <result column="b_status" property="bStatus" jdbcType="VARCHAR" />
     <result column="b_type" property="bType" jdbcType="VARCHAR" />
     <result column="b_img" property="bImg" jdbcType="VARCHAR" />
@@ -25,18 +25,19 @@
     from book
     where b_id = #{bId,jdbcType=INTEGER}
   </select>
-  <select id="selectAllHadByUid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+
+  <select id="selectAllHadByUid" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
     <include refid="Base_Column_List" />
     from book
-    where b_owner_id = #{bOwnerId,jdbcType=INTEGER}
+    where b_owner_id = #{bOwnerId,jdbcType=VARCHAR}
   </select>
 
-  <select id="selectAllUsedByUid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectAllUsedByUid" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
     <include refid="Base_Column_List" />
     from book
-    where b_user_id = #{bUserId,jdbcType=INTEGER}
+    where b_user_id = #{bUserId,jdbcType=VARCHAR}
   </select>
 
   <select id="selectByType" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -45,6 +46,14 @@
     from book
     where b_type = #{bType,jdbcType=VARCHAR}
   </select>
+
+  <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from book
+    where b_name = #{bName,jdbcType=VARCHAR}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from book
     where b_id = #{bId,jdbcType=INTEGER}
@@ -57,7 +66,7 @@
       )
     values (#{bId,jdbcType=INTEGER}, #{bName,jdbcType=VARCHAR}, #{bAuthor,jdbcType=VARCHAR}, 
       #{bPublisher,jdbcType=VARCHAR}, #{bPrice,jdbcType=VARCHAR}, #{bIsbn,jdbcType=VARCHAR}, 
-      #{bBarcode,jdbcType=VARCHAR}, #{bOwnerId,jdbcType=INTEGER}, #{bUserId,jdbcType=INTEGER}, 
+      #{bBarcode,jdbcType=VARCHAR}, #{bOwnerId,jdbcType=VARCHAR}, #{bUserId,jdbcType=VARCHAR}, 
       #{bStatus,jdbcType=VARCHAR}, #{bType,jdbcType=VARCHAR}, #{bImg,jdbcType=VARCHAR}
       )
   </insert>
@@ -124,10 +133,10 @@
         #{bBarcode,jdbcType=VARCHAR},
       </if>
       <if test="bOwnerId != null" >
-        #{bOwnerId,jdbcType=INTEGER},
+        #{bOwnerId,jdbcType=VARCHAR},
       </if>
       <if test="bUserId != null" >
-        #{bUserId,jdbcType=INTEGER},
+        #{bUserId,jdbcType=VARCHAR},
       </if>
       <if test="bStatus != null" >
         #{bStatus,jdbcType=VARCHAR},
@@ -162,10 +171,10 @@
         b_barcode = #{bBarcode,jdbcType=VARCHAR},
       </if>
       <if test="bOwnerId != null" >
-        b_owner_id = #{bOwnerId,jdbcType=INTEGER},
+        b_owner_id = #{bOwnerId,jdbcType=VARCHAR},
       </if>
       <if test="bUserId != null" >
-        b_user_id = #{bUserId,jdbcType=INTEGER},
+        b_user_id = #{bUserId,jdbcType=VARCHAR},
       </if>
       <if test="bStatus != null" >
         b_status = #{bStatus,jdbcType=VARCHAR},
@@ -187,8 +196,8 @@
       b_price = #{bPrice,jdbcType=VARCHAR},
       b_isbn = #{bIsbn,jdbcType=VARCHAR},
       b_barcode = #{bBarcode,jdbcType=VARCHAR},
-      b_owner_id = #{bOwnerId,jdbcType=INTEGER},
-      b_user_id = #{bUserId,jdbcType=INTEGER},
+      b_owner_id = #{bOwnerId,jdbcType=VARCHAR},
+      b_user_id = #{bUserId,jdbcType=VARCHAR},
       b_status = #{bStatus,jdbcType=VARCHAR},
       b_type = #{bType,jdbcType=VARCHAR},
       b_img = #{bImg,jdbcType=VARCHAR}

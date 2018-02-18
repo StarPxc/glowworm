@@ -21,7 +21,7 @@ public class UBServiceImpl implements UBService {
     BookMapper bookMapper;
 
     @Override
-    public List<Book> findAllHadBookByUid(Integer uid) {
+    public List<Book> findAllHadBookByUid(String uid) {
         try {
             if(uid!=null){
                 List<Book> list=bookMapper.selectAllHadByUid(uid);
@@ -35,7 +35,7 @@ public class UBServiceImpl implements UBService {
     }
 
     @Override
-    public List<Book> findAllUsedBookByUid(Integer uid) {
+    public List<Book> findAllUsedBookByUid(String uid) {
         try {
             if(uid!=null){
                 List<Book> list=bookMapper.selectAllUsedByUid(uid);
@@ -52,7 +52,7 @@ public class UBServiceImpl implements UBService {
     public String orderBook(UsBo usBo) {
         try{
             if(usBo!=null){
-                Integer uid=usBo.getuId();
+                String uid=usBo.getuId();
                 Integer bid=usBo.getbId();
                 Book book=bookMapper.selectByPrimaryKey(bid);
                 String status=book.getbStatus();
@@ -80,7 +80,7 @@ public class UBServiceImpl implements UBService {
     public String returnBook(UsBo usBo) {
         try{
             if(usBo!=null){
-                Integer uid=usBo.getuId();
+                String uid=usBo.getuId();
                 Integer bid=usBo.getbId();
                 Book book=bookMapper.selectByPrimaryKey(bid);
                 String status=book.getbStatus();
@@ -92,7 +92,7 @@ public class UBServiceImpl implements UBService {
                     //将书的状态设置为空闲
                     book.setbStatus("0");
                     //书的buserid设置为0代表此暂时无人使用
-                    book.setbUserId(0);
+                    book.setbUserId("0");
                     bookMapper.updateByPrimaryKeySelective(book);
                     return flag.toString();
                 }

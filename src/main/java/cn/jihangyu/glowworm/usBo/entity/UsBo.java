@@ -1,16 +1,16 @@
 package cn.jihangyu.glowworm.usBo.entity;
 
 public class UsBo {
-    private Integer uId;
+    private String uId;
 
     private Integer bId;
 
-    public Integer getuId() {
+    public String getuId() {
         return uId;
     }
 
-    public void setuId(Integer uId) {
-        this.uId = uId;
+    public void setuId(String uId) {
+        this.uId = uId == null ? null : uId.trim();
     }
 
     public Integer getbId() {
