@@ -6,6 +6,7 @@ import cn.jihangyu.glowworm.common.constants.Constants;
 import cn.jihangyu.glowworm.common.enums.ResultEnum;
 import cn.jihangyu.glowworm.common.execption.GlowwormExecption;
 import cn.jihangyu.glowworm.common.utils.MyUtil;
+import cn.jihangyu.glowworm.common.utils.QiniuFileUploadUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -182,27 +183,34 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public String upload(MultipartFile file, Integer aId) throws IOException {
+        if (file == null||aId==null ) {
+            throw new GlowwormExecption(ResultEnum.FILE_ERROR);
+        }
         Activity activity=activityMapper.selectByPrimaryKey(aId);
         if(activity==null){
             throw new GlowwormExecption(ResultEnum.OBJECT_FIND_ERROR);
         }
-        if (file == null ) {
-            throw new GlowwormExecption(ResultEnum.FILE_ERROR);
+        String img_url= QiniuFileUploadUtil.uploadBookImg(file);
+        String urls="";
+        if(activity.getAImgs()==null||activity.getAImgs().equals("")){
+            urls=img_url+",";
+        }else {
+            if(isExistence(img_url,activity.getAImgs())){//判断图片是否存在
+                throw new GlowwormExecption(ResultEnum.IMG_HAS_EXISTED);
+            }
+            urls=activity.getAImgs()+img_url+",";
         }
-        String folder= Constants.GLOWWORM_IMAGES_SRC+"activity";
-        //String folder = "F:\\java_2018\\glowworm\\src\\main\\java\\cn\\jihangyu\\glowworm";
-        String []temps=file.getOriginalFilename().split("\\.");
-        String fileSuffix = temps[temps.length-1];//取后缀名
-        if (!fileSuffix.matches("\\b(bmp|BMP|jpg|JPG|png|PNG|JPEG|jpeg)\\b")) {
-            throw new GlowwormExecption(ResultEnum.FILE_FORMAT_ERROR);
-        }
-        String fileName = aId + "_" + new Date().getTime();
-        String resultFileName = Constants.GLOWWORM_IMAGES_URL + "activity/" + fileName + "." + fileSuffix;
-        file.transferTo(new File(folder, fileName + "." + fileSuffix));
-        String dbImgUrl="";
-        activity.setAImgs(activity.getAImgs()==null?"":activity.getAImgs()+resultFileName+";");
+        activity.setAImgs(urls);
         activityMapper.updateByPrimaryKeySelective(activity);
-        return resultFileName;
+        return activity.getAImgs();
     }
-
+    private boolean isExistence(String img_url, String urls) {
+        String urlList[]=urls.split(",");
+        for (String s : urlList) {
+            if(img_url.equals(s)){
+                return true;
+            }
+        }
+        return false;
+    }
 }

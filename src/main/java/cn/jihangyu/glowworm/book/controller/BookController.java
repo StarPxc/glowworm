@@ -53,18 +53,11 @@ public class  BookController extends  BaseController {
 
 
     @ApiOperation(value="为书上传图片", notes="为书上传图片")
-    @ApiImplicitParam(name = "user", value = "书详细实体book", required = true, dataType = "Book")
-    @RequestMapping(value = "/uploadBookImg",method = RequestMethod.POST)
-    public ApiResult uploadBookImg(HttpServletRequest req, @RequestParam(required=true ) MultipartFile[] files,@RequestParam(required=true ) Integer id )throws Exception{
-        try {
-            Integer bid=id;
-            //upload_img_result为上传图片成功的数量
-            String upload_img_result=bookService.uploadBookImgs(files,bid);
-            return ResultUtil.success(upload_img_result);
-        }catch (Exception e){
-            log.error("上传图片失败");
-            return ResultUtil.error(ResultEnum.FILE_ERROR.getCode(),ResultEnum.FILE_ERROR.getMsg());
-        }
+    @ApiImplicitParam(name = "book", value = "书详细实体book", required = true, dataType = "Book")
+    @RequestMapping(value = "/upload",method = RequestMethod.POST)
+    public ApiResult upload( @RequestParam(required=true ) MultipartFile file,@RequestParam(required=true ) Integer id )throws Exception{
+        String resultFileName=bookService.upload(file,id);
+        return ResultUtil.success(resultFileName);
     }
 
 

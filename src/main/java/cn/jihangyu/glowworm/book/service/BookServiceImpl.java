@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -134,25 +135,38 @@ public class BookServiceImpl implements  BookService{
     }
 
     @Override
-    public String uploadBookImgs(MultipartFile[] files, Integer bid) {
-        try{
-            Book book=bookMapper.selectByPrimaryKey(bid);
-            if(book==null){
-                throw  new GlowwormExecption(ResultEnum.OBJECT_NULL_ERROR);
-            }
-            Integer size=files.length;
-            String urls="";
-            for(MultipartFile file:files){
-                String img_url=QiniuFileUploadUtil.uploadBookImg(file);
-                urls=urls+img_url+",";
-            }
-            book.setbImg(urls);
-            bookMapper.updateByPrimaryKeySelective(book);
-            return size.toString();
-        }catch (Exception e){
-            log.error("上传书的图片失败");
+    public String upload(MultipartFile file, Integer bid) throws IOException {
+        if (file == null||bid==null ) {
             throw new GlowwormExecption(ResultEnum.FILE_ERROR);
         }
+        Book book=bookMapper.selectByPrimaryKey(bid);
+        if(book==null){
+            throw new GlowwormExecption(ResultEnum.OBJECT_FIND_ERROR);
+        }
+        String img_url= QiniuFileUploadUtil.uploadBookImg(file);
+        String urls="";
+        if(book.getbImg()==null||book.getbImg().equals("")){
+            urls=img_url+",";
+        }
+        else {
+            if(isExistence(img_url,book.getbImg())){//判断图片是否存在
+                throw new GlowwormExecption(ResultEnum.IMG_HAS_EXISTED);
+            }
+            urls=book.getbImg()+img_url+",";
+        }
+        book.setbImg(urls);
+        bookMapper.updateByPrimaryKeySelective(book);
+        return book.getbImg();
+    }
+
+    private boolean isExistence(String img_url, String urls) {
+        String urlList[]=urls.split(",");
+        for (String s : urlList) {
+            if(img_url.equals(s)){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
