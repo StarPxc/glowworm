@@ -17,4 +17,6 @@ public interface BookService {
     void deleteBookById(Integer id);
 
     String uploadBookImgs(MultipartFile[] files, Integer bid);
+
+    List<Book> findBookByBookname(String bookname);
 }

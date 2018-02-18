@@ -154,4 +154,25 @@ public class BookServiceImpl implements  BookService{
             throw new GlowwormExecption(ResultEnum.FILE_ERROR);
         }
     }
+
+    @Override
+    public List<Book> findBookByBookname(String bookname) {
+        List<Book> books=null;
+        rlock.lock();
+        try{
+            books=bookMapper.selectByName(bookname);
+            if(books==null){
+                log.error("【bookname为】"+bookname+"的书不存在");
+                throw new NullPointerException("查找的书名不存在");
+            }
+        }catch(GlowwormExecption e){
+            log.error("【查找bookname为】"+bookname+"的书失败");
+            throw new GlowwormExecption(ResultEnum.OBJECT_FIND_ERROR);
+        }finally {
+            rlock.unlock();
+        }
+        return books;
+    }
+
+
 }

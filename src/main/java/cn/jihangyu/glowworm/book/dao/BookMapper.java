@@ -19,7 +19,9 @@ public interface BookMapper {
 
     List<Book> selectByType(String type);
 
-    List<Book> selectAllHadByUid(Integer uid);
+    List<Book> selectAllHadByUid(String uid);
 
-    List<Book> selectAllUsedByUid(Integer uid);
+    List<Book> selectAllUsedByUid(String uid);
+
+    List<Book> selectByName(String bookname);
 }

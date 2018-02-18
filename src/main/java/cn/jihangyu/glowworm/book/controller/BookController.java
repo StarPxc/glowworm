@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("book")
 @Slf4j
-public class BookController  {
+public class  BookController extends  BaseController {
 
     @Autowired
     @Qualifier("bookServiceImpl")
@@ -31,7 +31,19 @@ public class BookController  {
     @RequestMapping(value = "/addBook",method = RequestMethod.POST)
     public ApiResult addBook(HttpServletRequest req, @RequestBody Book book)throws Exception{
         try {
-            String result = bookService.addBook(book);
+            UserElement ue=getCurrentUser();
+            String result=null;
+            if(ue.getRole().equals("admin")) {
+                //管理员可以为任意用户上传书
+                result = bookService.addBook(book);
+                book.setbStatus("0");
+            }else{
+                //用户首次上传的书默认拥有者和使用者都是自己，状态是0
+                book.setbOwnerId(ue.getUserId());
+                book.setbUserId(ue.getUserId());
+                book.setbStatus("0");
+                result = bookService.addBook(book);
+            }
             return ResultUtil.success(result);
         }catch (Exception e){
             log.error("创建书失败");
@@ -61,9 +73,23 @@ public class BookController  {
     @ApiImplicitParam(name = "book", value = "书详细实体book", required = true, dataType = "Book")
     @RequestMapping(value = "/updateBook",method = RequestMethod.POST)
     public ApiResult updateBook(@RequestBody Book book) throws Exception {
+        String result = null;
+        UserElement ue=getCurrentUser();
         try {
-            String result = bookService.updateBook(book);
-            return ResultUtil.success(result);
+           if(ue.getRole().equals("admin")) {
+               //管理员可以修改任意书
+               bookService.updateBook(book);
+               return ResultUtil.success(result);
+           }else{
+               //当前用户为书的所有者才能修改书的信息
+               if(book.getbOwnerId().equals(ue.getUserId())) {
+                   result = bookService.updateBook(book);
+                   return ResultUtil.success(result);
+               }else{
+                   //否则抛出没有权限异常
+                   return ResultUtil.error(ResultEnum.NO_AUTHORITY.getCode(),ResultEnum.NO_AUTHORITY.getMsg());
+               }
+           }
         }catch (Exception e){
             log.error("更新书失败");
             return ResultUtil.error(ResultEnum.OBJECT_UPDATE_ERROR.getCode(),ResultEnum.OBJECT_UPDATE_ERROR.getMsg());
@@ -87,6 +113,23 @@ public class BookController  {
 
     }
 
+    @ApiOperation(value="根据书名查找书", notes="根据书名查找书")
+    @RequestMapping(value = "/getBookByName/{bookname}",method = RequestMethod.GET)
+    public ApiResult getBookByBookname(@PathVariable String  bookname) throws Exception {
+        try{
+            List<Book> books=bookService.findBookByBookname(bookname);
+            return ResultUtil.success(books);
+        }
+        catch (NullPointerException w) {
+            log.error("bookname为："+bookname+"的书不存在");
+            return ResultUtil.error(ResultEnum.OBJECT_FIND_ERROR.getCode(),ResultEnum.OBJECT_FIND_ERROR.getMsg());
+        }catch (Exception e){
+            log.error("查找bookname为："+bookname+"的书失败");
+            return ResultUtil.error(ResultEnum.OBJECT_FIND_ERROR.getCode(),ResultEnum.OBJECT_FIND_ERROR.getMsg());
+        }
+
+    }
+
     @ApiOperation(value="根据type查找书", notes="根据type查找书")
     @RequestMapping(value = "/getBookByType/{type}",method = RequestMethod.GET)
     public ApiResult getBookByType(@PathVariable String type) throws Exception {
@@ -101,25 +144,30 @@ public class BookController  {
             log.error("查找type为："+type+"的书失败");
             return ResultUtil.error(ResultEnum.OBJECT_FIND_ERROR.getCode(),ResultEnum.OBJECT_FIND_ERROR.getMsg());
         }
-
     }
 
-//    @ApiOperation(value="根据id删除书", notes="根据id删除书")
-//    @RequestMapping(value = "/deleteBookById/{id}",method = RequestMethod.GET)
-//    public ApiResult deleteBookById(@PathVariable Integer id) throws Exception {
-//        //用户id应该从后台获取，不能让前端传
-//        UserElement ue=getCurrentUser();//这个方法应该是很多controller都可以用的，所以可以做一个BaseCOntroller
-//        //判断当前用户是否为管理员用户(假设管理员用户的uid是1)
-//        if(ue==null){
-//            return ResultUtil.error(ResultEnum.CURRENT_USER_ERROR.getCode(),ResultEnum.CURRENT_USER_ERROR.getMsg());
-//        }else{
-//            if(ue.getUserId()==1){
-//                bookService.deleteBookById(id);
-//            }else{
-//                return ResultUtil.error(ResultEnum.NO_LOGIN.getCode(),ResultEnum.NO_AUTHORITY.getMsg());
-//            }
-//        }
-//        return ResultUtil.success("删除用户成功");
-//    }
-
+    @ApiOperation(value="根据id删除书", notes="根据id删除书")
+    @RequestMapping(value = "/deleteBookById/{id}",method = RequestMethod.GET)
+    public ApiResult deleteBookById(@PathVariable Integer id) throws Exception {
+        //用户id应该从后台获取，不能让前端传
+        UserElement ue=getCurrentUser();//这个方法应该是很多controller都可以用的，所以可以做一个BaseCOntroller
+        try {
+            if (ue == null) {
+                return ResultUtil.error(ResultEnum.CURRENT_USER_ERROR.getCode(), ResultEnum.CURRENT_USER_ERROR.getMsg());
+            } else {
+                if (ue.getRole().equals("admin")) {
+                    bookService.deleteBookById(id);
+                } else {
+                    //当前用户必须为书的拥有者，并且这本书的当前使用状态为0（空闲中）才能删除书
+                    Book book=bookService.findBookById(id);
+                    if(ue.getUserId().equals(book.getbOwnerId())&&book.getbStatus().equals("0")){
+                        bookService.deleteBookById(id);
+                    }
+                }
+            }
+            return ResultUtil.success("删除书成功");
+        }catch (Exception e){
+            return ResultUtil.error(ResultEnum.OBJECT_DELETE_ERROR.getCode(),ResultEnum.OBJECT_DELETE_ERROR.getMsg());
+        }
+    }
 }

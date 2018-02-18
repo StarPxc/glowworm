@@ -23,41 +23,41 @@ public class UBController extends BaseController{
     @Qualifier("UBServiceImpl")
     private UBService ubService;
 
-   /* @ApiOperation(value = "用户查询自己拥有的书",notes = "用户查询自己拥有的书")
+   @ApiOperation(value = "用户查询自己拥有的书",notes = "用户查询自己拥有的书")
     @RequestMapping(value = "/findAllHadBookByUid/{id}",method = RequestMethod.GET)
-    public ApiResult findAllHadBookByUid(@PathVariable int id){
+    public ApiResult findAllHadBookByUid(@PathVariable String id){
         UserElement ue=getCurrentUser();//用户只能查看自己拥有的书
         try {
             if ("admin".equals(ue.getRole())) {
                 List<Book> list = ubService.findAllHadBookByUid(id);//只有管理员能查看任意用户拥有的书
                 return ResultUtil.success(list);
             } else {
-                Integer uid = ue.getUserId();
+                String uid = ue.getUserId();
                 List<Book> list = ubService.findAllHadBookByUid(uid);
                 return ResultUtil.success(list);
             }
         }catch (Exception e){
             return ResultUtil.error(ResultEnum.OBJECT_FIND_ERROR.getCode(),ResultEnum.OBJECT_FIND_ERROR.getMsg());
         }
-    }*/
+    }
 
-    /*@ApiOperation(value = "用户查询自己正在使用的书",notes = "用户查询自己正在使用的书")
+    @ApiOperation(value = "用户查询自己正在使用的书",notes = "用户查询自己正在使用的书")
     @RequestMapping(value = "/findAllUsedBookByUid/{id}",method = RequestMethod.GET)
-    public ApiResult findAllUsedBookByUid(@PathVariable int id){
+    public ApiResult findAllUsedBookByUid(@PathVariable String id){
         UserElement ue=getCurrentUser();//用户只能查看自己正在使用的书
         try {
             if ("admin".equals(ue.getRole())) {
                 List<Book> list = ubService.findAllUsedBookByUid(id);//只有管理员能查看任意用户正在使用的书
                 return ResultUtil.success(list);
             } else {
-                Integer uid = ue.getUserId();
+                String uid = ue.getUserId();
                 List<Book> list = ubService.findAllUsedBookByUid(uid);
                 return ResultUtil.success(list);
             }
         }catch (Exception e){
             return ResultUtil.error(ResultEnum.OBJECT_FIND_ERROR.getCode(),ResultEnum.OBJECT_FIND_ERROR.getMsg());
         }
-    }*/
+    }
 
     @ApiOperation(value = "用户预约某本书",notes = "用户预约某本书")
     @RequestMapping(value = "/orderBook",method = RequestMethod.POST)

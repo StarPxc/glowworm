@@ -15,9 +15,9 @@ public class Book {
 
     private String bBarcode;
 
-    private Integer bOwnerId;
+    private String bOwnerId;
 
-    private Integer bUserId;
+    private String bUserId;
 
     private String bStatus;
 
@@ -81,20 +81,20 @@ public class Book {
         this.bBarcode = bBarcode == null ? null : bBarcode.trim();
     }
 
-    public Integer getbOwnerId() {
+    public String getbOwnerId() {
         return bOwnerId;
     }
 
-    public void setbOwnerId(Integer bOwnerId) {
-        this.bOwnerId = bOwnerId;
+    public void setbOwnerId(String bOwnerId) {
+        this.bOwnerId = bOwnerId == null ? null : bOwnerId.trim();
     }
 
-    public Integer getbUserId() {
+    public String getbUserId() {
         return bUserId;
     }
 
-    public void setbUserId(Integer bUserId) {
-        this.bUserId = bUserId;
+    public void setbUserId(String bUserId) {
+        this.bUserId = bUserId == null ? null : bUserId.trim();
     }
 
     public String getbStatus() {

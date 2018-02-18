@@ -6,9 +6,9 @@ import cn.jihangyu.glowworm.usBo.entity.UsBo;
 import java.util.List;
 
 public interface UBService {
-    List<Book> findAllHadBookByUid(Integer uid);
+    List<Book> findAllHadBookByUid(String uid);
 
-    List<Book> findAllUsedBookByUid(Integer id);
+    List<Book> findAllUsedBookByUid(String id);
 
     String orderBook(UsBo usBo);
 
