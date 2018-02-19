@@ -27,14 +27,16 @@ public class BookController extends BaseController {
     @Qualifier("bookServiceImpl")
     private BookService bookService;
 
-    @ApiOperation(value = "创建书", notes = "根据Book对象创建书")
-    @ApiImplicitParam(name = "user", value = "书详细实体book", required = true, dataType = "Book")
-    @RequestMapping(value = "/addBook", method = RequestMethod.POST)
-    public ApiResult addBook(HttpServletRequest req, @RequestBody Book book) throws Exception {
 
-            UserElement ue = getCurrentUser();
-            String result = null;
-            if (ue.getRole().equals("admin")) {
+    @ApiOperation(value="创建书", notes="根据Book对象创建书")
+    @ApiImplicitParam(name = "book", value = "书详细实体book", required = true, dataType = "Book")
+    @RequestMapping(value = "/addBook",method = RequestMethod.POST)
+    public ApiResult addBook(HttpServletRequest req, @RequestBody Book book)throws Exception{
+        try {
+            UserElement ue=getCurrentUser();
+            String result=null;
+            if(ue.getRole().equals("admin")) {
+
                 //管理员可以为任意用户上传书
                 result = bookService.addBook(book);
                 book.setbStatus("0");
@@ -50,12 +52,14 @@ public class BookController extends BaseController {
     }
 
 
+
     @ApiOperation(value = "为书上传图片", notes = "为书上传图片")
     @ApiImplicitParam(name = "book", value = "书详细实体book", required = true, dataType = "Book")
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public ApiResult upload(@RequestParam(required = true) MultipartFile file, @RequestParam(required = true) Integer id) throws Exception {
         String resultFileName = bookService.upload(file, id);
         return ResultUtil.success(resultFileName);
+
     }
 
 
