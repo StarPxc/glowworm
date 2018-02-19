@@ -1,11 +1,13 @@
 package cn.jihangyu.glowworm.usAc.controller;
 
 import cn.jihangyu.glowworm.activity.entity.Activity;
+import cn.jihangyu.glowworm.common.base.BaseController;
 import cn.jihangyu.glowworm.common.resp.ApiResult;
 import cn.jihangyu.glowworm.common.utils.ResultUtil;
 import cn.jihangyu.glowworm.usAc.entity.UsAc;
 import cn.jihangyu.glowworm.usAc.service.UAService;
 import cn.jihangyu.glowworm.user.entity.User;
+import cn.jihangyu.glowworm.user.entity.UserElement;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,14 +24,18 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("ua")
-public class UAController {
+public class UAController extends BaseController{
     @Autowired
     @Qualifier("UAServiceImpl")
     private UAService uaService;
 
     @ApiOperation(value = "参加活动",notes = "参加活动")
-    @RequestMapping(value = "/join",method = RequestMethod.POST)
-    public ApiResult join(@RequestBody UsAc usAc) throws Exception {
+    @RequestMapping(value = "/join/{id}",method = RequestMethod.GET)
+    public ApiResult join(@PathVariable Integer id) throws Exception {
+        UserElement ue=getCurrentUser();
+        UsAc usAc=new UsAc();
+        usAc.setaId(id);
+        usAc.setuId(ue.getUserId());
         UsAc usAc1=uaService.addUsAc(usAc);
         return ResultUtil.success(usAc1);
     }
@@ -49,6 +55,13 @@ public class UAController {
     @RequestMapping(value = "/findActiviysByUserId",method = RequestMethod.POST)
     public ApiResult findActiviysByUserId(@RequestParam String openid,@RequestParam int state) throws Exception {
         List<Activity> activities=uaService.findActiviysByUserId(openid,state);
+        return ResultUtil.success(activities);
+    }
+    @ApiOperation(value="根据当前用户和活动状态查找他参加的活动", notes="{1：未进行，2：正在进行，3：已结束，0:所有)")
+    @RequestMapping(value = "/findActiviysByCurrentUser",method = RequestMethod.POST)
+    public ApiResult findActiviysByUserId(@RequestParam int state) throws Exception {
+        UserElement ue=getCurrentUser();
+        List<Activity> activities=uaService.findActiviysByUserId(ue.getUserId(),state);
         return ResultUtil.success(activities);
     }
 
