@@ -84,16 +84,22 @@ public class ActivityController extends BaseController{
     }
     @ApiOperation(value = "批量上传活动图片", notes = "批量上传活动图片")
     @RequestMapping(value = "/uploadBatch", method = RequestMethod.POST)
-    public ApiResult uploadBatch(@RequestParam("files") MultipartFile[] files, @RequestParam Integer aId) throws IOException {
-        String [] resultFileNames=activityService.uploadBatch(files,aId);
+    public ApiResult uploadBatch(@RequestParam("files") MultipartFile[] files, @RequestParam Integer id) throws IOException {
+        String [] resultFileNames=activityService.uploadBatch(files,id);
         return ResultUtil.success(resultFileNames);
         
     }
     @ApiOperation(value = "上传单个活动图片", notes = "上传单个活动图片")
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public ApiResult upload(@RequestParam("file") MultipartFile file, @RequestParam Integer aId) throws IOException {
-            String resultFileName=activityService.upload(file,aId);
-            return ResultUtil.success(resultFileName);
+    public ApiResult upload(@RequestParam("file") MultipartFile file, @RequestParam Integer id) throws IOException {
+            UserElement ue=getCurrentUser();
+            if("admin".equals(ue.getRole())){
+                String resultFileName=activityService.upload(file,id);
+                return ResultUtil.success(resultFileName);
+            }else {
+                throw new GlowwormExecption(ResultEnum.IDENTITY_AUTHENTICATION_FAILURE);
+            }
+
     }
 
 }

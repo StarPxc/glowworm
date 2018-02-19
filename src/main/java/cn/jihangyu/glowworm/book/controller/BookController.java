@@ -4,6 +4,7 @@ import cn.jihangyu.glowworm.book.entity.Book;
 import cn.jihangyu.glowworm.book.service.BookService;
 import cn.jihangyu.glowworm.common.base.BaseController;
 import cn.jihangyu.glowworm.common.enums.ResultEnum;
+import cn.jihangyu.glowworm.common.execption.GlowwormExecption;
 import cn.jihangyu.glowworm.common.resp.ApiResult;
 import cn.jihangyu.glowworm.common.utils.ResultUtil;
 import cn.jihangyu.glowworm.user.entity.UserElement;
@@ -54,8 +55,23 @@ public class BookController extends BaseController {
     @ApiImplicitParam(name = "book", value = "书详细实体book", required = true, dataType = "Book")
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public ApiResult upload(@RequestParam(required = true) MultipartFile file, @RequestParam(required = true) Integer id) throws Exception {
-        String resultFileName = bookService.upload(file, id);
-        return ResultUtil.success(resultFileName);
+        UserElement ue = getCurrentUser();
+        if (ue.getRole().equals("admin")||isOwner(ue.getUserId(),id)) {
+            //管理员可以修改任意书
+            String resultFileName = bookService.upload(file, id);
+            return ResultUtil.success(resultFileName);
+        }else {
+            throw new GlowwormExecption(ResultEnum.IDENTITY_AUTHENTICATION_FAILURE);
+        }
+
+    }
+
+    private boolean isOwner(String userId,Integer id) {
+        if(bookService.findBookById(id).getbOwnerId().equals(userId)){
+            return true;
+        }else {
+            return false;
+        }
     }
 
 
