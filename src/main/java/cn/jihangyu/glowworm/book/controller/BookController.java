@@ -27,7 +27,7 @@ public class  BookController extends  BaseController {
     private BookService bookService;
 
     @ApiOperation(value="创建书", notes="根据Book对象创建书")
-    @ApiImplicitParam(name = "user", value = "书详细实体book", required = true, dataType = "Book")
+    @ApiImplicitParam(name = "book", value = "书详细实体book", required = true, dataType = "Book")
     @RequestMapping(value = "/addBook",method = RequestMethod.POST)
     public ApiResult addBook(HttpServletRequest req, @RequestBody Book book)throws Exception{
         try {
@@ -53,7 +53,7 @@ public class  BookController extends  BaseController {
 
 
     @ApiOperation(value="为书上传图片", notes="为书上传图片")
-    @ApiImplicitParam(name = "user", value = "书详细实体book", required = true, dataType = "Book")
+    @ApiImplicitParam(name = "files", value = "图片文件", required = true, dataType = "File")
     @RequestMapping(value = "/uploadBookImg",method = RequestMethod.POST)
     public ApiResult uploadBookImg(HttpServletRequest req, @RequestParam(required=true ) MultipartFile[] files,@RequestParam(required=true ) Integer id )throws Exception{
         try {
