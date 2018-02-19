@@ -1,5 +1,4 @@
 package cn.jihangyu.glowworm.book.controller;
-
 import cn.jihangyu.glowworm.book.entity.Book;
 import cn.jihangyu.glowworm.book.service.BookService;
 import cn.jihangyu.glowworm.common.base.BaseController;
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
