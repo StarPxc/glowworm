@@ -16,7 +16,6 @@ import java.io.IOException;
 
 public class QiniuFileUploadUtil {
     public static String uploadBookImg(MultipartFile file) throws IOException {
-
         Configuration cfg = new Configuration(Zone.zone0());
         UploadManager uploadManager = new UploadManager(cfg);
         Auth auth = Auth.create(Constants.QINIU_ACCESS_KEY, Constants.QINIU_SECRET_KEY);
