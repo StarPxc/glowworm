@@ -28,9 +28,11 @@ public enum ResultEnum {
     BOOK_ORDERD(601,"图书已被预定"),
     BOOK_NOT_ORDERD(602,"图书未被预定"),
     ORDER_ERROR(603,"预定图书失败"),
+
     RETURN_ERROR(604,"归还图书失败"), IDENTITY_AUTHENTICATION_FAILURE(514,"身份验证失败" ),
     //关于图片
     IMG_ERROR(701,"获取图片失败");
+
     private Integer code;
     private String msg;
 

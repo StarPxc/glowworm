@@ -148,7 +148,7 @@ public class UserServiceImpl implements UserService {
         UserElement ue=new UserElement();
         ue.setToken(token);
         ue.setUserId(openid);
-        ue.setRole("user");//管理员权限直接在数据库去修改，默认都是普通用户
+        ue.setRole("admin".equals(user.getURole())?"admin":"user");//管理员权限直接在数据库去修改，默认都是普通用户
         cacheUtil.putTokenWhenLogin(ue);//把token 存入缓存
         return token;
     }

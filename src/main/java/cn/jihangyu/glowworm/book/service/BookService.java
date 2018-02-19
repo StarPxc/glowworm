@@ -3,6 +3,7 @@ package cn.jihangyu.glowworm.book.service;
 import cn.jihangyu.glowworm.book.entity.Book;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface BookService {
@@ -16,7 +17,7 @@ public interface BookService {
 
     void deleteBookById(Integer id);
 
-    String uploadBookImgs(MultipartFile[] files, Integer bid);
+    String upload(MultipartFile file, Integer bid) throws IOException;
 
     List<Book> findBookByBookname(String bookname);
 }
