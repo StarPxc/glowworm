@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartException;
 
 /**
  * @author Ethanp
@@ -25,7 +26,10 @@ public class ExecptionHandle {
         if(e instanceof GlowwormExecption){
             GlowwormExecption glowwormExecption=(GlowwormExecption)e;
             return ResultUtil.error(glowwormExecption.getCode(),glowwormExecption.getMessage());
-        }else {
+        }else if(e instanceof MultipartException){
+            return ResultUtil.error(ResultEnum.FILE_TOO_BIG.getCode(),ResultEnum.FILE_TOO_BIG.getMsg());
+        }
+        else {
             log.error("【系统异常】",e);
             return ResultUtil.error(ResultEnum.UNKONW_ERROR.getCode(),ResultEnum.UNKONW_ERROR.getMsg());
         }
