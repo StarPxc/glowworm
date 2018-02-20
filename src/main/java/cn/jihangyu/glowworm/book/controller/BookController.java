@@ -61,9 +61,7 @@ public class BookController extends BaseController {
         }else {
             throw new GlowwormExecption(ResultEnum.IDENTITY_AUTHENTICATION_FAILURE);
         }
-
     }
-
     private boolean isOwner(String userId,Integer id) {
         if(bookService.findBookById(id).getbOwnerId().equals(userId)){
             return true;
