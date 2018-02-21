@@ -26,4 +26,5 @@ public class QiniuFileUploadUtil {
         return putRet.key;
     }
 
+
 }

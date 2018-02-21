@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jihangyu.glowworm.message.dao.MessageMapper" >
+  <resultMap id="BaseResultMap" type="cn.jihangyu.glowworm.message.entity.Message" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="from_uid" property="fromUid" jdbcType="VARCHAR" />
+    <result column="to_uid" property="toUid" jdbcType="VARCHAR" />
+    <result column="bid" property="bid" jdbcType="INTEGER" />
+    <result column="letter" property="letter" jdbcType="VARCHAR" />
+    <result column="pass" property="pass" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, from_uid, to_uid, bid, letter, pass
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from message
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByToUid" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from message
+    where to_uid = #{toUid,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByFromUidAndisReplyed" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from message
+    where from_uid = #{fromUid,jdbcType=VARCHAR} AND pass!="0"
+  </select>
+
+  <select id="selectByBid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from message
+    where bid = #{bid,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from message
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.jihangyu.glowworm.message.entity.Message" >
+    insert into message (id, from_uid, to_uid, 
+      bid, letter, pass)
+    values (#{id,jdbcType=INTEGER}, #{fromUid,jdbcType=VARCHAR}, #{toUid,jdbcType=VARCHAR}, 
+      #{bid,jdbcType=INTEGER}, #{letter,jdbcType=VARCHAR}, #{pass,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.jihangyu.glowworm.message.entity.Message" >
+    insert into message
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="fromUid != null" >
+        from_uid,
+      </if>
+      <if test="toUid != null" >
+        to_uid,
+      </if>
+      <if test="bid != null" >
+        bid,
+      </if>
+      <if test="letter != null" >
+        letter,
+      </if>
+      <if test="pass != null" >
+        pass,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="fromUid != null" >
+        #{fromUid,jdbcType=VARCHAR},
+      </if>
+      <if test="toUid != null" >
+        #{toUid,jdbcType=VARCHAR},
+      </if>
+      <if test="bid != null" >
+        #{bid,jdbcType=INTEGER},
+      </if>
+      <if test="letter != null" >
+        #{letter,jdbcType=VARCHAR},
+      </if>
+      <if test="pass != null" >
+        #{pass,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.jihangyu.glowworm.message.entity.Message" >
+    update message
+    <set >
+      <if test="fromUid != null" >
+        from_uid = #{fromUid,jdbcType=VARCHAR},
+      </if>
+      <if test="toUid != null" >
+        to_uid = #{toUid,jdbcType=VARCHAR},
+      </if>
+      <if test="bid != null" >
+        bid = #{bid,jdbcType=INTEGER},
+      </if>
+      <if test="letter != null" >
+        letter = #{letter,jdbcType=VARCHAR},
+      </if>
+      <if test="pass != null" >
+        pass = #{pass,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.jihangyu.glowworm.message.entity.Message" >
+    update message
+    set from_uid = #{fromUid,jdbcType=VARCHAR},
+      to_uid = #{toUid,jdbcType=VARCHAR},
+      bid = #{bid,jdbcType=INTEGER},
+      letter = #{letter,jdbcType=VARCHAR},
+      pass = #{pass,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
