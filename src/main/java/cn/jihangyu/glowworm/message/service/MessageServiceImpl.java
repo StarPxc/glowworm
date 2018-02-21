@@ -24,20 +24,24 @@ public class MessageServiceImpl implements MessageService {
             Message temp=messageMapper.selectByBid(message.getBid());
             if(temp==null){
                 //如果查询不到关于这本书的消息记录，可插入记录
-                messageMapper.insertSelective(message);
+                int code=messageMapper.insertSelective(message);
+                System.out.println(code);
                 return result;
             }else{
                 //如果查询到了关于这本书的消息记录，但可能是几个不同的用户发出的请求消息，此时需要判断
                 if(temp.getFromUid().equals(message.getFromUid())&&temp.getToUid().equals(message.getToUid())){
                         throw new GlowwormExecption(ResultEnum.MESSAGE_EXIST);
                 }else{
-                    messageMapper.insertSelective(message);
+                    int code=messageMapper.insertSelective(message);
+                    System.out.println(code);
                     return result;
                 }
             }
 
         }catch (Exception e){
+            System.out.println(e);
             throw new GlowwormExecption(ResultEnum.OBJECT_ADD_ERROR);
+
         }
     }
 
