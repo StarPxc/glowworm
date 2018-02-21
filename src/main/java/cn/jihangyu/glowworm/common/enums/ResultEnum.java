@@ -32,8 +32,10 @@ public enum ResultEnum {
 
     RETURN_ERROR(604,"归还图书失败"), IDENTITY_AUTHENTICATION_FAILURE(514,"身份验证失败" ),
     //关于图片
-    IMG_ERROR(701,"获取图片失败"), IMG_HAS_EXISTED(702, "图片已经存在");
+    IMG_ERROR(701,"获取图片失败"), IMG_HAS_EXISTED(702, "图片已经存在"),
 
+    //关于消息
+    MESSAGE_EXIST(801,"消息记录已存在");
     private Integer code;
     private String msg;
 
