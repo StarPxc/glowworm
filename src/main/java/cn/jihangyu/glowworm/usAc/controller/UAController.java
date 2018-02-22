@@ -30,7 +30,7 @@ public class UAController extends BaseController{
     private UAService uaService;
 
     @ApiOperation(value = "参加活动",notes = "参加活动")
-    @RequestMapping(value = "/join/{id}",method = RequestMethod.POST)
+    @RequestMapping(value = "/join",method = RequestMethod.POST)
     public ApiResult join(@RequestParam Integer aId,@RequestParam String phone) throws Exception {
         UserElement ue=getCurrentUser();
         UsAc usAc=new UsAc();
