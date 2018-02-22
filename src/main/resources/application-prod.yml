@@ -6,6 +6,12 @@ spring:
     username: root
     url: jdbc:mysql://localhost:3306/glowworm?autoReconnect=true&useUnicode=true&characterEncoding=utf-8&useSSL=false
 
+    #ActiveMQ
+    activemq:
+      broker-url: tcp://localhost:61616
+      pool:
+          enable: false
+
 
 #reids
 redis:
