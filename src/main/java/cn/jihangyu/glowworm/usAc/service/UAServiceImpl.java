@@ -38,7 +38,10 @@ public class UAServiceImpl implements UAService {
     private static Lock rlock = lock.readLock();
     private static Lock wlock = lock.writeLock();
     @Override
-    public UsAc addUsAc(UsAc usAc) throws Exception {
+    public UsAc addUsAc(UsAc usAc,String phone) throws Exception {
+        if(phone==null||phone.equals("")){
+            throw new GlowwormExecption(ResultEnum.PHONE_NULL_ERROR);
+        }
         if (usAc == null) {
             throw new GlowwormExecption(ResultEnum.OBJECT_NULL_ERROR);
         }
@@ -51,6 +54,10 @@ public class UAServiceImpl implements UAService {
         if (activityMapper.selectByPrimaryKey(usAc.getAId()) == null) {
             throw new GlowwormExecption(ResultEnum.NO_ACTIVITY);
         }
+        User user=new User();
+        user.setUId(usAc.getUId());
+        user.setUPhone(phone);
+        userMapper.updateByPrimaryKey(user);
         UsAc usAc1=usAcMapper.selectUsAcByUidAndAid(usAc.getUId(),usAc.getAId());
         if(usAc1!=null){
             throw new GlowwormExecption(ResultEnum.HAS_JOIN);

@@ -37,7 +37,7 @@ public enum ResultEnum {
     //关于消息
     MESSAGE_EXIST(801,"消息记录已存在"),
     //关于活动
-    HAS_JOIN(901,"已报名" );
+    HAS_JOIN(901,"已报名" ), PHONE_NULL_ERROR(902,"电话号码为空" );
     private Integer code;
     private String msg;
 

@@ -30,13 +30,13 @@ public class UAController extends BaseController{
     private UAService uaService;
 
     @ApiOperation(value = "参加活动",notes = "参加活动")
-    @RequestMapping(value = "/join/{id}",method = RequestMethod.GET)
-    public ApiResult join(@PathVariable Integer id) throws Exception {
+    @RequestMapping(value = "/join/{id}",method = RequestMethod.POST)
+    public ApiResult join(@RequestParam Integer aId,@RequestParam String phone) throws Exception {
         UserElement ue=getCurrentUser();
         UsAc usAc=new UsAc();
-        usAc.setAId(id);
+        usAc.setAId(aId);
         usAc.setUId(ue.getUserId());
-        UsAc usAc1=uaService.addUsAc(usAc);
+        UsAc usAc1=uaService.addUsAc(usAc,phone);
         return ResultUtil.success(usAc1);
     }
     @ApiOperation(value="根据id删除用户和活动的关系", notes="根据id删除活动")

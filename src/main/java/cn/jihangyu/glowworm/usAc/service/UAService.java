@@ -17,9 +17,10 @@ public interface UAService {
     /**
      * 用户参加活动
      * @param usAc
+     * @param phone 报名者电话
      * @return
      */
-    UsAc addUsAc(UsAc usAc) throws Exception;
+    UsAc addUsAc(UsAc usAc,String phone) throws Exception;
 
     /**
      * 根据id删除用户和活动的关系
