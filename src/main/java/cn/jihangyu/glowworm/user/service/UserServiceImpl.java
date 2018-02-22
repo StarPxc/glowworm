@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String login(String code) throws IOException {
+    public String login(String code,String nickName) throws IOException {
         String openid="";
         //用code换取openid
         CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -142,6 +142,7 @@ public class UserServiceImpl implements UserService {
         if(user==null){
             User newUser=new User();
             newUser.setUId(openid);
+            newUser.setUNickname(nickName);
            userMapper.insertSelective(newUser);
         }
         String token= generateToken(openid);//生成token

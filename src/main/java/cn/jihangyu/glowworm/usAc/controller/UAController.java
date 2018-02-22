@@ -34,8 +34,8 @@ public class UAController extends BaseController{
     public ApiResult join(@PathVariable Integer id) throws Exception {
         UserElement ue=getCurrentUser();
         UsAc usAc=new UsAc();
-        usAc.setaId(id);
-        usAc.setuId(ue.getUserId());
+        usAc.setAId(id);
+        usAc.setUId(ue.getUserId());
         UsAc usAc1=uaService.addUsAc(usAc);
         return ResultUtil.success(usAc1);
     }

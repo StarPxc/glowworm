@@ -35,7 +35,9 @@ public enum ResultEnum {
     IMG_ERROR(701,"获取图片失败"), IMG_HAS_EXISTED(702, "图片已经存在"),
 
     //关于消息
-    MESSAGE_EXIST(801,"消息记录已存在");
+    MESSAGE_EXIST(801,"消息记录已存在"),
+    //关于活动
+    HAS_JOIN(901,"已报名" );
     private Integer code;
     private String msg;
 

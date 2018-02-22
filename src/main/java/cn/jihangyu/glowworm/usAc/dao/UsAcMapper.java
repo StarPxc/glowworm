@@ -16,4 +16,6 @@ public interface UsAcMapper {
     int updateByPrimaryKeySelective(UsAc record);
 
     int updateByPrimaryKey(UsAc record);
+
+    UsAc selectUsAcByUidAndAid(String uId, Integer aId);
 }

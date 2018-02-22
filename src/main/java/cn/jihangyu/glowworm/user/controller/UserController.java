@@ -64,8 +64,8 @@ public class UserController extends BaseController{
 
     @ApiOperation(value = "用户登录", notes = "用户登录")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ApiResult login(@RequestParam String code) throws IOException {
-        String token=userService.login(code);
+    public ApiResult login(@RequestParam String code,@RequestParam String nickName) throws IOException {
+        String token=userService.login(code,nickName);
         return ResultUtil.success(token);
     }
 

@@ -45,11 +45,15 @@ public class UAServiceImpl implements UAService {
         if (MyUtil.isAllFieldNull(usAc)) {
             throw new GlowwormExecption(ResultEnum.OBJECT_ALL_Field_NULL);
         }
-        if (userMapper.selectByPrimaryKey(usAc.getuId()) == null) {
+        if (userMapper.selectByPrimaryKey(usAc.getUId()) == null) {
             throw new GlowwormExecption(ResultEnum.NO_USER);
         }
-        if (activityMapper.selectByPrimaryKey(usAc.getaId()) == null) {
+        if (activityMapper.selectByPrimaryKey(usAc.getAId()) == null) {
             throw new GlowwormExecption(ResultEnum.NO_ACTIVITY);
+        }
+        UsAc usAc1=usAcMapper.selectUsAcByUidAndAid(usAc.getUId(),usAc.getAId());
+        if(usAc1!=null){
+            throw new GlowwormExecption(ResultEnum.HAS_JOIN);
         }
         wlock.lock();
         try {

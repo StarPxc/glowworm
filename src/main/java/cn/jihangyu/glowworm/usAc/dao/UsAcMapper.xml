@@ -9,6 +9,13 @@
   <sql id="Base_Column_List" >
     ua_id, u_id, a_id
   </sql>
+
+  <select id="selectUsAcByUidAndAid" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from us_ac
+    where u_id = #{0} AND a_id=#{1}
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />

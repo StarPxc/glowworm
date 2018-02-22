@@ -36,7 +36,8 @@ public interface UserService {
     /**
      * 登录
      * @param code 微信code
+     *@param code nickName 微信昵称
      * @return token
      */
-    String login(String code) throws IOException;
+    String login(String code,String nickName) throws IOException;
 }
