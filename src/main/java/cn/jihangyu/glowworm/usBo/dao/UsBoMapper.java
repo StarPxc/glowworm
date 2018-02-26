@@ -1,7 +1,9 @@
 package cn.jihangyu.glowworm.usBo.dao;
 
 import cn.jihangyu.glowworm.usBo.entity.UsBo;
+import org.springframework.stereotype.Component;
 
+@Component
 public interface UsBoMapper {
     int deleteByPrimaryKey(String uId);
 

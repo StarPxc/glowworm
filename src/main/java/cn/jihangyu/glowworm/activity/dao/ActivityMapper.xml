@@ -5,16 +5,17 @@
     <id column="a_id" property="aId" jdbcType="INTEGER" />
     <result column="a_title" property="aTitle" jdbcType="VARCHAR" />
     <result column="a_introduction" property="aIntroduction" jdbcType="VARCHAR" />
+    <result column="a_address" property="aAddress" jdbcType="VARCHAR" />
+    <result column="a_sponsor" property="aSponsor" jdbcType="VARCHAR" />
     <result column="a_start_time" property="aStartTime" jdbcType="TIMESTAMP" />
     <result column="a_end_time" property="aEndTime" jdbcType="TIMESTAMP" />
     <result column="a_state" property="aState" jdbcType="CHAR" />
     <result column="a_imgs" property="aImgs" jdbcType="VARCHAR" />
-    <result column="total_number_of_registration" property="totalNumberOfRegistration" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    a_id, a_title, a_introduction, a_start_time, a_end_time, a_state, a_imgs, total_number_of_registration
+    a_id, a_title, a_introduction, a_address, a_sponsor, a_start_time, a_end_time, a_state, 
+    a_imgs
   </sql>
-
   <select id="selectAllActiviysByUserId" resultMap="BaseResultMap" parameterType="java.lang.String">
     select
     <include refid="Base_Column_List" />
@@ -28,17 +29,17 @@
     where a_id  in (SELECT DISTINCT  a_id FROM us_ac,`user` WHERE `user`.u_id=us_ac.u_id AND `user`.u_id=#{0})
     AND activity.a_state=#{1}
   </select>
-    <select id="selectAllActiviys" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List" />
-        from activity
-    </select>
-    <select id="selectActiviysByState" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-        select
-        <include refid="Base_Column_List" />
-        from activity
-        where a_state=#{state}
-    </select>
+  <select id="selectAllActiviys" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from activity
+  </select>
+  <select id="selectActiviysByState" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from activity
+    where a_state=#{state}
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -49,15 +50,17 @@
     delete from activity
     where a_id = #{aId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.jihangyu.glowworm.activity.entity.Activity" useGeneratedKeys="true" keyProperty="aId">
+  <insert id="insert" parameterType="cn.jihangyu.glowworm.activity.entity.Activity" >
     insert into activity (a_id, a_title, a_introduction, 
-      a_start_time, a_end_time, a_state, 
-      a_imgs, total_number_of_registration)
+      a_address, a_sponsor, a_start_time, 
+      a_end_time, a_state, a_imgs
+      )
     values (#{aId,jdbcType=INTEGER}, #{aTitle,jdbcType=VARCHAR}, #{aIntroduction,jdbcType=VARCHAR}, 
-      #{aStartTime,jdbcType=TIMESTAMP}, #{aEndTime,jdbcType=TIMESTAMP}, #{aState,jdbcType=CHAR}, 
-      #{aImgs,jdbcType=VARCHAR}, #{totalNumberOfRegistration,jdbcType=INTEGER})
+      #{aAddress,jdbcType=VARCHAR}, #{aSponsor,jdbcType=VARCHAR}, #{aStartTime,jdbcType=TIMESTAMP}, 
+      #{aEndTime,jdbcType=TIMESTAMP}, #{aState,jdbcType=CHAR}, #{aImgs,jdbcType=VARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="cn.jihangyu.glowworm.activity.entity.Activity" useGeneratedKeys="true" keyProperty="aId">
+  <insert id="insertSelective" parameterType="cn.jihangyu.glowworm.activity.entity.Activity" >
     insert into activity
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="aId != null" >
@@ -68,6 +71,12 @@
       </if>
       <if test="aIntroduction != null" >
         a_introduction,
+      </if>
+      <if test="aAddress != null" >
+        a_address,
+      </if>
+      <if test="aSponsor != null" >
+        a_sponsor,
       </if>
       <if test="aStartTime != null" >
         a_start_time,
@@ -81,9 +90,6 @@
       <if test="aImgs != null" >
         a_imgs,
       </if>
-      <if test="totalNumberOfRegistration != null" >
-        total_number_of_registration,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="aId != null" >
@@ -94,6 +100,12 @@
       </if>
       <if test="aIntroduction != null" >
         #{aIntroduction,jdbcType=VARCHAR},
+      </if>
+      <if test="aAddress != null" >
+        #{aAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="aSponsor != null" >
+        #{aSponsor,jdbcType=VARCHAR},
       </if>
       <if test="aStartTime != null" >
         #{aStartTime,jdbcType=TIMESTAMP},
@@ -107,9 +119,6 @@
       <if test="aImgs != null" >
         #{aImgs,jdbcType=VARCHAR},
       </if>
-      <if test="totalNumberOfRegistration != null" >
-        #{totalNumberOfRegistration,jdbcType=INTEGER},
-      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="cn.jihangyu.glowworm.activity.entity.Activity" >
@@ -120,6 +129,12 @@
       </if>
       <if test="aIntroduction != null" >
         a_introduction = #{aIntroduction,jdbcType=VARCHAR},
+      </if>
+      <if test="aAddress != null" >
+        a_address = #{aAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="aSponsor != null" >
+        a_sponsor = #{aSponsor,jdbcType=VARCHAR},
       </if>
       <if test="aStartTime != null" >
         a_start_time = #{aStartTime,jdbcType=TIMESTAMP},
@@ -133,9 +148,6 @@
       <if test="aImgs != null" >
         a_imgs = #{aImgs,jdbcType=VARCHAR},
       </if>
-      <if test="totalNumberOfRegistration != null" >
-        total_number_of_registration = #{totalNumberOfRegistration,jdbcType=INTEGER},
-      </if>
     </set>
     where a_id = #{aId,jdbcType=INTEGER}
   </update>
@@ -143,11 +155,12 @@
     update activity
     set a_title = #{aTitle,jdbcType=VARCHAR},
       a_introduction = #{aIntroduction,jdbcType=VARCHAR},
+      a_address = #{aAddress,jdbcType=VARCHAR},
+      a_sponsor = #{aSponsor,jdbcType=VARCHAR},
       a_start_time = #{aStartTime,jdbcType=TIMESTAMP},
       a_end_time = #{aEndTime,jdbcType=TIMESTAMP},
       a_state = #{aState,jdbcType=CHAR},
-      a_imgs = #{aImgs,jdbcType=VARCHAR},
-      total_number_of_registration = #{totalNumberOfRegistration,jdbcType=INTEGER}
+      a_imgs = #{aImgs,jdbcType=VARCHAR}
     where a_id = #{aId,jdbcType=INTEGER}
   </update>
 </mapper>

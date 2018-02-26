@@ -20,4 +20,6 @@ public interface BookService {
     String upload(MultipartFile file, Integer bid) throws IOException;
 
     List<Book> findBookByBookname(String bookname);
+
+    List<Book> getBookByTag(String tag);
 }

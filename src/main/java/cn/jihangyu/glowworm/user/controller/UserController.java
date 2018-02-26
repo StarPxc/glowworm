@@ -50,6 +50,13 @@ public class UserController extends BaseController{
         User user=userService.findUserById(openid);
         return ResultUtil.success(user);
     }
+    @ApiOperation(value="获取当前用户信息", notes="获取当前用户信息")
+    @RequestMapping(value = "/getCurrentUser",method = RequestMethod.GET)
+    public ApiResult getCurrentUserInfo() throws Exception {
+        UserElement ue=getCurrentUser();
+        User user=userService.findUserById(ue.getUserId());
+        return ResultUtil.success(user);
+    }
     @ApiOperation(value="根据id删除用户", notes="根据id删除用户")
     @RequestMapping(value = "/deleteUser/{id}",method = RequestMethod.GET)
     public ApiResult deleteUser(@PathVariable String id) throws Exception {

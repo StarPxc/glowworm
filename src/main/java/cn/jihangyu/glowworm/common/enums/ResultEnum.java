@@ -16,6 +16,7 @@ public enum ResultEnum {
     OBJECT_FIND_ERROR(504,"查询对象失败"),
     OBJECT_DELETE_ERROR(505,"删除对象失败"),
     OBJECT_UPDATE_ERROR(506,"更新对象失败"),
+    OBJECT_FIND_NULL(507,"查询结果不存在" ),
     NO_USER(507,"用户不存在"),
     NO_ACTIVITY(508,"活动不存在"),
     REDIS_INITIALIZATION_ERROR(507,"redis初始化失败"),

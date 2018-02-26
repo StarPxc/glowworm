@@ -33,11 +33,11 @@
     where from_uid = #{fromUid,jdbcType=VARCHAR} AND pass!="0"
   </select>
 
-  <select id="selectByBid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByFromUidAndBid" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from message
-    where bid = #{bid,jdbcType=INTEGER}
+    where from_uid=#{0} AND bid = #{1}
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >

@@ -1,9 +1,10 @@
 package cn.jihangyu.glowworm.message.dao;
 
 import cn.jihangyu.glowworm.message.entity.Message;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
-
+@Component
 public interface MessageMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -21,5 +22,5 @@ public interface MessageMapper {
 
     List<Message> selectByFromUidAndisReplyed(String from_uid);
 
-    Message selectByBid(Integer bid);
+    Message selectByFromUidAndBid(String fromUid,Integer bid);
 }

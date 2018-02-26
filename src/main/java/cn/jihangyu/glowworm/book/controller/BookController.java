@@ -50,7 +50,6 @@ public class BookController extends BaseController {
 
 
     @ApiOperation(value = "为书上传图片", notes = "为书上传图片")
-    @ApiImplicitParam(name = "book", value = "书详细实体book", required = true, dataType = "Book")
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public ApiResult upload(@RequestParam(required = true) MultipartFile file, @RequestParam(required = true) Integer id) throws Exception {
         UserElement ue = getCurrentUser();
@@ -145,6 +144,14 @@ public class BookController extends BaseController {
             return ResultUtil.error(ResultEnum.OBJECT_FIND_ERROR.getCode(), ResultEnum.OBJECT_FIND_ERROR.getMsg());
         }
     }
+    @ApiOperation(value = "根据type查找书", notes = "根据type查找书")
+    @RequestMapping(value = "/getBookByTag/{tag}", method = RequestMethod.GET)
+    public ApiResult getBookByTag(@PathVariable String tag) throws Exception {
+            List<Book> books = bookService.getBookByTag(tag);
+            return ResultUtil.success(books);
+
+    }
+
 
     @ApiOperation(value = "根据id删除书", notes = "根据id删除书")
     @RequestMapping(value = "/deleteBookById/{id}", method = RequestMethod.GET)

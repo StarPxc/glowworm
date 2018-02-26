@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -41,7 +42,7 @@ public class BookServiceImpl implements  BookService{
         wlock.lock();
         try {
             bookMapper.insertSelective(book);
-            result=ResultEnum.SUCCSEE.getMsg();
+            result=book.getbId()+"";
         }catch (Exception e){
             log.error("【添加对象失败】",e);
             throw new GlowwormExecption(ResultEnum.OBJECT_ADD_ERROR);
@@ -186,6 +187,34 @@ public class BookServiceImpl implements  BookService{
             rlock.unlock();
         }
         return books;
+    }
+
+    @Override
+    public List<Book> getBookByTag(String tag) {
+        if(tag==null){
+            throw new GlowwormExecption(ResultEnum.OBJECT_NULL_ERROR);
+        }
+        List<Book> books=bookMapper.selectAllBooks();
+        List<Book> resultBooks=new ArrayList<>();
+        for (Book book: books){
+            if(hasTag(tag,book.getbTag())){
+                    resultBooks.add(book);
+            }
+        }
+        if(resultBooks.size()==0){
+            throw new GlowwormExecption(ResultEnum.OBJECT_FIND_NULL);
+        }
+        return resultBooks;
+    }
+
+    private boolean hasTag(String s, String tagString) {
+        String[] tags=tagString.split(",");
+        for (String tag:tags) {
+            if(s.equals(tag)){
+                return true;
+            }
+        }
+        return false;
     }
 
 

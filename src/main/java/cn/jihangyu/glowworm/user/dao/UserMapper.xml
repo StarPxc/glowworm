@@ -34,7 +34,8 @@
     delete from user
     where u_id = #{uId,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="cn.jihangyu.glowworm.user.entity.User" >
+  <insert id="insert" parameterType="cn.jihangyu.glowworm.user.entity.User" useGeneratedKeys="true"
+          keyProperty="uId">
     insert into user (u_id, u_nickname, u_province, 
       u_city, u_gender, u_email, appointment_b_id, 
       u_phone, u_self_introduction, u_role
@@ -44,7 +45,8 @@
       #{uPhone,jdbcType=CHAR}, #{uSelfIntroduction,jdbcType=VARCHAR}, #{uRole,jdbcType=CHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="cn.jihangyu.glowworm.user.entity.User" >
+  <insert id="insertSelective" parameterType="cn.jihangyu.glowworm.user.entity.User" useGeneratedKeys="true"
+          keyProperty="uId">
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="uId != null" >

@@ -11,6 +11,10 @@ public class Activity {
 
     private String aIntroduction;
 
+    private String aAddress;
+
+    private String aSponsor;
+
     private Date aStartTime;
 
     private Date aEndTime;
@@ -18,8 +22,6 @@ public class Activity {
     private String aState;
 
     private String aImgs;
-
-    private Integer totalNumberOfRegistration;
 
 
 }

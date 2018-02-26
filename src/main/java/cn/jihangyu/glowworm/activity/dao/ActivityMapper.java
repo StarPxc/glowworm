@@ -4,7 +4,6 @@ import cn.jihangyu.glowworm.activity.entity.Activity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-
 @Component
 public interface ActivityMapper {
     int deleteByPrimaryKey(Integer aId);
@@ -18,7 +17,6 @@ public interface ActivityMapper {
     int updateByPrimaryKeySelective(Activity record);
 
     int updateByPrimaryKey(Activity record);
-
     List<Activity> selectActiviysByUserId(String id, Integer state);
 
     List<Activity> selectAllActiviysByUserId(String id);

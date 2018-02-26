@@ -17,16 +17,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("ub")
-public class UBController extends BaseController{
+public class UBController extends BaseController {
 
     @Autowired
     @Qualifier("UBServiceImpl")
     private UBService ubService;
 
-   @ApiOperation(value = "用户查询自己拥有的书",notes = "用户查询自己拥有的书")
-    @RequestMapping(value = "/findAllHadBookByUid/{id}",method = RequestMethod.GET)
-    public ApiResult findAllHadBookByUid(@PathVariable String id){
-        UserElement ue=getCurrentUser();//用户只能查看自己拥有的书
+    @ApiOperation(value = "用户查询自己拥有的书", notes = "用户查询自己拥有的书")
+    @RequestMapping(value = "/findAllHadBookByUid/{id}", method = RequestMethod.GET)
+    public ApiResult findAllHadBookByUid(@PathVariable String id) {
+        UserElement ue = getCurrentUser();//用户只能查看自己拥有的书
         try {
             if ("admin".equals(ue.getRole())) {
                 List<Book> list = ubService.findAllHadBookByUid(id);//只有管理员能查看任意用户拥有的书
@@ -36,15 +36,15 @@ public class UBController extends BaseController{
                 List<Book> list = ubService.findAllHadBookByUid(uid);
                 return ResultUtil.success(list);
             }
-        }catch (Exception e){
-            return ResultUtil.error(ResultEnum.OBJECT_FIND_ERROR.getCode(),ResultEnum.OBJECT_FIND_ERROR.getMsg());
+        } catch (Exception e) {
+            return ResultUtil.error(ResultEnum.OBJECT_FIND_ERROR.getCode(), ResultEnum.OBJECT_FIND_ERROR.getMsg());
         }
     }
 
-    @ApiOperation(value = "用户查询自己正在使用的书",notes = "用户查询自己正在使用的书")
-    @RequestMapping(value = "/findAllUsedBookByUid/{id}",method = RequestMethod.GET)
-    public ApiResult findAllUsedBookByUid(@PathVariable String id){
-        UserElement ue=getCurrentUser();//用户只能查看自己正在使用的书
+    @ApiOperation(value = "用户查询自己正在使用的书", notes = "用户查询自己正在使用的书")
+    @RequestMapping(value = "/findAllUsedBookByUid/{id}", method = RequestMethod.GET)
+    public ApiResult findAllUsedBookByUid(@PathVariable String id) {
+        UserElement ue = getCurrentUser();//用户只能查看自己正在使用的书
         try {
             if ("admin".equals(ue.getRole())) {
                 List<Book> list = ubService.findAllUsedBookByUid(id);//只有管理员能查看任意用户正在使用的书
@@ -54,31 +54,31 @@ public class UBController extends BaseController{
                 List<Book> list = ubService.findAllUsedBookByUid(uid);
                 return ResultUtil.success(list);
             }
-        }catch (Exception e){
-            return ResultUtil.error(ResultEnum.OBJECT_FIND_ERROR.getCode(),ResultEnum.OBJECT_FIND_ERROR.getMsg());
+        } catch (Exception e) {
+            return ResultUtil.error(ResultEnum.OBJECT_FIND_ERROR.getCode(), ResultEnum.OBJECT_FIND_ERROR.getMsg());
         }
     }
 
-    @ApiOperation(value = "用户预约某本书",notes = "用户预约某本书")
-    @RequestMapping(value = "/orderBook",method = RequestMethod.POST)
-    public ApiResult orderBook(@RequestBody UsBo usBo){
-        try{
-            String result=ubService.orderBook(usBo);
-            return ResultUtil.success();
-        }catch (Exception e){
-            return ResultUtil.error(ResultEnum.ORDER_ERROR.getCode(),ResultEnum.ORDER_ERROR.getMsg());
-        }
+    @ApiOperation(value = "用户预约某本书", notes = "用户预约某本书")
+    @RequestMapping(value = "/orderBook", method = RequestMethod.POST)
+    public ApiResult orderBook(@RequestParam Integer bId) {
+        UserElement ue = getCurrentUser();
+        UsBo usBo = new UsBo();
+        usBo.setbId(bId);
+        usBo.setuId(ue.getUserId());
+        String result = ubService.orderBook(usBo);
+        return ResultUtil.success(result);
     }
 
-    @ApiOperation(value = "用户归还某本书",notes = "用户归还某本书")
-    @RequestMapping(value = "/returnBook",method = RequestMethod.POST)
-    public ApiResult returnBook(@RequestBody UsBo usBo){
-        try{
-            String result=ubService.returnBook(usBo);
-            return ResultUtil.success();
-        }catch (Exception e){
-            return ResultUtil.error(ResultEnum.RETURN_ERROR.getCode(),ResultEnum.RETURN_ERROR.getMsg());
-        }
+    @ApiOperation(value = "用户归还某本书", notes = "用户归还某本书")
+    @RequestMapping(value = "/returnBook", method = RequestMethod.POST)
+    public ApiResult returnBook(@RequestParam Integer bId) {
+        UserElement ue = getCurrentUser();
+        UsBo usBo = new UsBo();
+        usBo.setbId(bId);
+        usBo.setuId(ue.getUserId());
+        String result = ubService.returnBook(usBo);
+        return ResultUtil.success(result);
     }
 
 }

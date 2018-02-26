@@ -1,9 +1,11 @@
 package cn.jihangyu.glowworm.book.dao;
 
 import cn.jihangyu.glowworm.book.entity.Book;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public interface BookMapper {
     int deleteByPrimaryKey(Integer bId);
 
@@ -24,4 +26,6 @@ public interface BookMapper {
     List<Book> selectAllUsedByUid(String uid);
 
     List<Book> selectByName(String bookname);
+
+    List<Book> selectAllBooks();
 }
