@@ -2,7 +2,7 @@
 spring:
   datasource:
     name: glowworm
-    password: xiaoji1019
+    password: 935377012
     username: root
     url: jdbc:mysql://localhost:3306/glowworm?autoReconnect=true&useUnicode=true&characterEncoding=utf-8&useSSL=false
 

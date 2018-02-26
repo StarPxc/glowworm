@@ -4,7 +4,7 @@ spring:
   application:
     name: glowworm
   profiles:
-    active: prod
+    active: dev
   http:
     multipart:
       max-file-size: 5Mb
