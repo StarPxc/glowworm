@@ -5,6 +5,7 @@ import cn.jihangyu.glowworm.common.enums.ResultEnum;
 import cn.jihangyu.glowworm.common.resp.ApiResult;
 import cn.jihangyu.glowworm.common.utils.ResultUtil;
 import cn.jihangyu.glowworm.message.entity.Message;
+import cn.jihangyu.glowworm.message.entity.MessageElement;
 import cn.jihangyu.glowworm.message.service.MessageService;
 import cn.jihangyu.glowworm.user.entity.User;
 import cn.jihangyu.glowworm.user.entity.UserElement;
@@ -43,18 +44,14 @@ public class MessageController extends BaseController {
 
 
     @ApiOperation(value = "获取和用户本人相关的请求消息", notes = "获取和用户本人相关的请求消息")
-    @RequestMapping(value = "/getMyRequest/{to_uid}", method = RequestMethod.GET)
-    public ApiResult getMyRequest(@PathVariable String to_uid) {
+    @RequestMapping(value = "/getMyRequest", method = RequestMethod.GET)
+    public ApiResult getMyRequest() {
         //可以获取所有to_uid为当前用户的message
         UserElement ue = getCurrentUser();
-        if (to_uid.equals(ue.getUserId())) {
-            //返回查询到的message实体列表
-            List<Message> messages = messageService.getRequestMessage(to_uid);
-            return ResultUtil.success(messages);
-        } else {
-            //假如message的to_uid和当前用户id不匹配，则抛出没有权限
-            return ResultUtil.error(ResultEnum.NO_AUTHORITY.getCode(), ResultEnum.NO_AUTHORITY.getMsg());
-        }
+        String to_uid=ue.getUserId();
+        //返回查询到的message实体列表
+        List<MessageElement> mes = messageService.getRequestMessage(to_uid);
+        return ResultUtil.success(mes);
     }
 
     @ApiOperation(value = "发送回复消息", notes = "发送回复消息")
@@ -76,20 +73,18 @@ public class MessageController extends BaseController {
 
 
     @ApiOperation(value = "获取和用户本人相关的回复消息", notes = "获取和用户本人相关的回复消息")
-    @RequestMapping(value = "/getMyReply/{from_uid}", method = RequestMethod.GET)
-    public ApiResult getMyReply(@PathVariable String from_uid) {
+    @RequestMapping(value = "/getMyReply", method = RequestMethod.GET)
+    public ApiResult getMyReply() {
         //获取回复消息，前提是message的记录的pass字段非0
         //因为0表示还未处理，这时相当于还未得到他人回复，所以不应该被查询到
         //pass字段为1（同意）或2（拒绝），这时表示已经得到回复，所以应该被查询到
         UserElement ue = getCurrentUser();
-        if (from_uid.equals(ue.getUserId())) {
-            //返回查询到的message实体列表
-            List<Message> messages = messageService.getReplyMessage(from_uid);
-            return ResultUtil.success(messages);
-        } else {
-            //假如message的from_uid和当前用户id不匹配，则抛出没有权限
-            return ResultUtil.error(ResultEnum.NO_AUTHORITY.getCode(), ResultEnum.NO_AUTHORITY.getMsg());
-        }
+        String from_uid=ue.getUserId();
+
+        //返回查询到的messageElements实体列表
+        List<MessageElement> mes = messageService.getReplyMessage(from_uid);
+        return ResultUtil.success(mes);
+
     }
 
     @ApiOperation(value = "根据消息id获取消息记录", notes = "根据消息id获取消息记录")

@@ -7,6 +7,7 @@ import cn.jihangyu.glowworm.common.execption.GlowwormExecption;
 import cn.jihangyu.glowworm.jms.SmsProcessor;
 import cn.jihangyu.glowworm.message.dao.MessageMapper;
 import cn.jihangyu.glowworm.message.entity.Message;
+import cn.jihangyu.glowworm.message.entity.MessageElement;
 import cn.jihangyu.glowworm.user.dao.UserMapper;
 import cn.jihangyu.glowworm.user.entity.User;
 import com.alibaba.fastjson.JSON;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.jms.Destination;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,10 +82,37 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<Message> getRequestMessage(String to_uid) {
+    public List<MessageElement> getRequestMessage(String to_uid) {
         try {
             List<Message> messages = messageMapper.selectByToUid(to_uid);
-            return messages;
+
+            List<MessageElement> mes=new ArrayList<>();
+
+            for(Message m : messages){
+                String fromUid=m.getFromUid();
+                //获取这条信息发信人的用户预览信息
+                User user=userMapper.selectByPrimaryKey(fromUid);
+                String nickname=user.getUNickname();
+                String city=user.getUCity();
+
+                //获取这条消息相关的书的预览信息
+                Integer bookid=m.getBid();
+                Book book=bookMapper.selectByPrimaryKey(bookid);
+                String bookname=book.getbName();
+                String bimg=book.getbImg();
+
+                //封装
+                MessageElement me=new MessageElement();
+                me.setMessage(m);
+                me.setFromUnickbname(nickname);
+                me.setFromUcity(city);
+                me.setBookname(bookname);
+                me.setBookimg(bimg);
+
+                mes.add(me);
+
+            }
+            return mes;
         } catch (Exception e) {
             throw new GlowwormExecption(ResultEnum.OBJECT_FIND_ERROR);
         }
@@ -122,10 +151,34 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<Message> getReplyMessage(String from_uid) {
+    public List<MessageElement> getReplyMessage(String from_uid) {
         try {
             List<Message> messages = messageMapper.selectByFromUidAndisReplyed(from_uid);
-            return messages;
+
+            List<MessageElement> mes=new ArrayList<>();
+
+            for(Message m:messages){
+                String to_uid=m.getToUid();
+                //获取发件人的昵称
+                User user=userMapper.selectByPrimaryKey(to_uid);
+                String nickname=user.getUNickname();
+
+                //获取书本信息
+                Integer bookid=m.getBid();
+                Book book=bookMapper.selectByPrimaryKey(bookid);
+                String bookname=book.getbName();
+                String bimg=book.getbImg();
+
+                //封装
+                MessageElement me=new MessageElement();
+                me.setMessage(m);
+                me.setFromUnickbname(nickname);
+                me.setBookname(bookname);
+                me.setBookimg(bimg);
+
+                mes.add(me);
+            }
+            return mes;
         } catch (Exception e) {
             throw new GlowwormExecption(ResultEnum.OBJECT_FIND_ERROR);
         }
